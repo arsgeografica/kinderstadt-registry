@@ -10,6 +10,13 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     packages=find_packages(),
     install_requires=[
+        'alembic==0.7.6',
+        'click==4.0',
+        'path.py==7.3',
+        'pgcli==0.17.0',
+        'Flask-Migrate==1.4.0',
+        'Flask-SQLAlchemy==2.0',
+        'Flask==0.10.1',
     ],
     extras_require={
         'devel': [
@@ -19,4 +26,9 @@ setup(
             'ipython',
         ],
     },
+    entry_points={
+        'console_scripts': [
+            'registry=registry.cli:main'
+        ]
+    }
 )
