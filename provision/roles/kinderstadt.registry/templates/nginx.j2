@@ -1,0 +1,44 @@
+{% if not passgen_server_name %}
+server {
+    # don't forget to tell on which port this server listens
+    listen [::]:80;
+    listen 80;
+
+    server_name {{ passgen_server_name }};
+
+    # listen on the www host
+    server_name www.{{ passgen_server_name }};
+
+    # and redirect to the non-www host (declared below)
+    return 301 $scheme://{{ passgen_server_name }}$request_uri;
+}
+
+{% endif %}
+server {
+    listen [::]:80 deferred;
+    listen 80 deferred;
+
+    {%- if passgen_server_name %}
+    # The host name to respond to
+    server_name {{ passgen_server_name }};
+    {% endif %}
+
+    # Path for static files
+    root {{ passgen_static_dir }};
+
+    #Specify a charset
+    charset utf-8;
+
+    {%- if passgen_url_path != '/' %}
+    location = {{ passgen_url_path }} { rewrite ^ {{ passgen_url_path }}/; }
+    {% endif -%}
+    location {{ passgen_url_path }} { try_files $uri @passgen; }
+    location @passgen {
+        include uwsgi_params;
+        {%- if passgen_url_path != '/' %}
+        uwsgi_param SCRIPT_NAME {{ passgen_url_path }};
+        uwsgi_modifier1 30;
+        {% endif -%}
+        uwsgi_pass unix:{{ passgen_socket_file }};
+    }
+}

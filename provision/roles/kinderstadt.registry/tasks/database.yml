@@ -1,0 +1,10 @@
+---
+- name: Database | Create user
+  postgresql_user:
+    name: kinderstadt
+
+- name: Database | Create database
+  postgresql_db:
+    name: registry
+    owner: kinderstadt
+    encoding: UTF-8

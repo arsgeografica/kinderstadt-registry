@@ -1,0 +1,10 @@
+---
+- hosts: all
+
+  roles:
+    - role: arsgeografica.core
+    - role: arsgeografica.webserver
+    - role: arsgeografica.postgis
+
+  vars:
+    openssl_version: "1.0.2c"

@@ -1,0 +1,14 @@
+- src: https://github.com/arsgeografica/ansible-core
+  path: provision/roles
+  name: arsgeografica.core
+  version: v1.0.1
+
+- src: https://github.com/arsgeografica/ansible-webserver
+  path: provision/roles
+  name: arsgeografica.webserver
+  version: v1.0.1
+
+- src: https://github.com/arsgeografica/ansible-postgis
+  path: provision/roles
+  name: arsgeografica.postgis
+  version: v1.0.3
