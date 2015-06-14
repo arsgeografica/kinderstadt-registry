@@ -4,7 +4,23 @@
   roles:
     - role: arsgeografica.core
     - role: arsgeografica.webserver
+    - role: ANXS.postgresql
+    # - role: arsgeografica.postgresql-bdr
     - role: arsgeografica.postgis
 
   vars:
+    postgresql_version: 9.4
+    postgresql_ext_install_postgis: yes
+    postgresql_ext_postgis_version: 2.1
+    postgresql_max_connections: 100
+    postgresql_max_wal_senders: 10
+    postgresql_max_replication_slots: 10
+    postgresql_max_worker_processes: 10
+    postgresql_wal_level: logical
+    # For debuging BDR
+    # postgresql_log_error_verbosity: verbose
+    # postgresql_log_min_messages: debug1
+    # postgresql_log_line_prefix: 'd=%d p=%p a=%a%q '
+
+    nginx_install_method: package
     openssl_version: "1.0.2c"
