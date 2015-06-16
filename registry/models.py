@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
@@ -85,6 +86,15 @@ class Passport(db.Model):
         """Mark passport as deactivated, prohibiting new visits"""
         self.deactivated = True
         db.session.commit()
+
+    @classmethod
+    def get(cls, pass_id):
+        try:
+            return cls.query.filter(cls.pass_id == pass_id).one()
+        except:
+            msg = 'Non-unique query result for pass_id "%d"' % pass_id
+            logger = logging.getLogger(__name__)
+            logger.exception(msg)
 
 
 class Visit(db.Model):

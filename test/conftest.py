@@ -20,7 +20,7 @@ def database(request):
 @pytest.fixture
 def app(request, database):
     # And override the database URL
-    app = factory('registry.config.development')
+    app = factory('registry.config.testing')
     app.config['SQLALCHEMY_DATABASE_URI'] = database.url()
 
     # Set up schema

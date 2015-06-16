@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<form method="post">
+    {{ form.csrf_token() }}
+    <label for="surname">Vorname: {{ form.surname() }}</label>
+    <label for="name">Name: {{ form.name() }}</label>
+    <button>Aktivieren</button>
+</form>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}

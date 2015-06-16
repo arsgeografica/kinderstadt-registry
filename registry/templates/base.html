@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% block head %}{% endblock %}
+</head>
+<body class="container {%- if body_class %} {{ body_class }}{% endif %}">
+    <div class="logo">
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='assets/logo_dessopolis.svg') }}">
+        </a>
+    </div>
+    {% block body %}{% endblock %}
+    <div class="registry-version">registry {{ __version__ }}</div>
+    {% block script %}{% endblock %}
+    {%- if PIWIK_HOST and PIWIK_ID %}{% include 'piwik.html' %}{% endif -%}
+</body>
+</html>

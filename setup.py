@@ -35,11 +35,12 @@ setup(
     install_requires=[
         'alembic==0.7.6',
         'click==4.0',
-        'path.py==7.3',
-        'pgcli==0.17.0',
         'Flask-Migrate==1.4.0',
         'Flask-SQLAlchemy==2.0',
+        'Flask-WTF==0.11',
         'Flask==0.10.1',
+        'path.py==7.3',
+        'pgcli==0.17.0',
     ],
     extras_require={
         'devel': [

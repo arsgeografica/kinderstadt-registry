@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row routes">
+    <div class="col-xs-12 col-md-6">
+        <a href="{{ url_for('desk.home') }}" class="btn btn-primary">Register</a>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <a href="" class="btn btn-primary">Backoffice</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+{% endblock %}
