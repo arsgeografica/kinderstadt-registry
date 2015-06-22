@@ -1,5 +1,7 @@
 import logging
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, case
+from sqlalchemy.sql import text
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
 from sqlalchemy.dialects.postgresql import UUID
@@ -24,6 +26,9 @@ class Passport(db.Model):
     name = Column(String(length=128), nullable=False)
     surname = Column(String(length=128), nullable=False)
     deactivated = Column(Boolean)
+
+    visits = relationship('Visit', backref=backref('passport'),
+                          order_by='desc(Visit.timestamp)')
 
     @classmethod
     def create(cls, surname, name, pass_id):
@@ -74,13 +79,17 @@ class Passport(db.Model):
 
         :param when: timestamp to use for checkout, defaults to datetime.now()
         """
-        if len(self.visits):
-            current_visit = self.visits[-1]
+        if len(self.visits) and not self.visits[0].check_out:
+            current_visit = self.visits[0]
         else:
             current_visit = Visit()
             current_visit.passport = self
 
         current_visit.check_out = when if when else datetime.now()
+
+        db.session.commit()
+
+        return current_visit
 
     def deactivate(self):
         """Mark passport as deactivated, prohibiting new visits"""
@@ -109,12 +118,14 @@ class Visit(db.Model):
     check_in = Column(DateTime(timezone=False), index=True)
     check_out = Column(DateTime(timezone=False), index=True)
 
-    passport = relationship('Passport', backref=backref('visits'))
-
-    @property
+    @hybrid_property
     def timestamp(self):
         """Property giving timestamp for last visit check in or check out"""
         return self.check_out if self.check_out else self.check_in
+
+    @timestamp.expression
+    def timestamp(cls):
+        return text('GREATEST(%s, %s)' % (cls.check_in, cls.check_out))
 
     @property
     def is_open(self):
