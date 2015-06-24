@@ -14,7 +14,8 @@ def home():
             else:
                 return redirect(url_for('desk.activate', pass_id=pass_id))
 
-    return render_template('desk/home.html', form=form)
+    return render_template('desk/home.html', form=form,
+                           active_passes=Passport.active_passes())
 
 
 def activate(pass_id):

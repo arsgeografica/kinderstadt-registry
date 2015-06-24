@@ -84,3 +84,27 @@ def test_is_checked_in_property(app):
         assert passport.checked_in
         passport.check_out()
         assert not passport.checked_in
+
+
+def test_passport_actives_passes_query(app):
+    """Check that the Passport's active_passes query method works"""
+    with app.test_request_context():
+        p1 = Passport.create('A', 'A', 111)
+        p2 = Passport.create('B', 'B', 222)
+        p3 = Passport.create('C', 'C', 333)
+
+        assert Passport.active_passes().count() == 0
+        p1.check_in()
+        assert Passport.active_passes().count() == 1
+        p2.check_in()
+        assert Passport.active_passes().count() == 2
+        p3.check_in()
+        assert Passport.active_passes().count() == 3
+        p1.check_out()
+        assert Passport.active_passes().count() == 2
+        p3.check_out()
+        assert Passport.active_passes().count() == 1
+        p2.check_out()
+        assert Passport.active_passes().count() == 0
+        p1.check_in()
+        assert Passport.active_passes().count() == 1

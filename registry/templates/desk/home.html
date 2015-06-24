@@ -7,6 +7,9 @@
         {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID') }}
     </div>
 </form>
+<div class="active-counter">
+    Es sind <span class="counter">{{ active_passes.count() }}</span> Kinder anwesend.
+</div>
 {% endblock %}
 
 {% block head %}

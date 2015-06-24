@@ -1,6 +1,7 @@
 import logging
 from sqlalchemy import ForeignKey, case
-from sqlalchemy.sql import text
+from sqlalchemy.sql import desc, text
+from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
@@ -108,6 +109,24 @@ class Passport(db.Model):
             msg = 'Non-unique query result for pass_id "%d"' % pass_id
             logger = logging.getLogger(__name__)
             logger.exception(msg)
+
+    @classmethod
+    def active_passes(cls):
+        last_visits = db.session.query(
+            Visit,
+            func.row_number().over(
+                partition_by=Visit.passport_id,
+                order_by=desc(Visit.timestamp)).label('row_number')) \
+            .subquery('lv')
+        open_visits = db.session.query(Visit) \
+                        .select_entity_from(last_visits) \
+                        .filter(last_visits.c.row_number == 1) \
+                        .filter(last_visits.c.check_out == None) \
+                        .subquery()
+
+        open_passports = db.session.query(Passport).join(open_visits)
+
+        return open_passports
 
 
 class Visit(db.Model):
