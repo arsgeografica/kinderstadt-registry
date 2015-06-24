@@ -1,5 +1,6 @@
-from flask import abort, redirect, render_template, request, url_for
-from registry.forms import ActivateForm, QuickSelectForm
+from logging import getLogger
+from flask import abort, flash, redirect, render_template, request, url_for
+from registry.forms import ActivateForm, QuickSelectForm, TransactionForm
 from registry.models import Passport
 
 
@@ -33,8 +34,25 @@ def passport(pass_id):
     if not passport:
         abort(404)
 
-    return render_template('desk/passport.html', passport=passport)
-
-
-def transaction(passport_id):
-    return render_template('desk/transaction_confirm.html')
+    form = TransactionForm(request.form, obj=passport)
+    if 'POST' == request.method:
+        if form.validate_on_submit():
+            logger = getLogger(__name__)
+            checked_in = checked_out = False
+            if request.form.get('checkin') is not None:
+                if passport.checked_in:
+                    pass
+                passport.check_in()
+                logger.debug('Checked in pass id %d', passport.pass_id)
+                checked_in = True
+                flash('Pass %d wurde eingecheckt.' % pass_id, 'checkin')
+            elif request.form.get('checkout') is not None:
+                if not passport.checked_in:
+                    pass
+                passport.check_out()
+                logger.debug('Checked out pass id %d', passport.pass_id)
+                checked_out = True
+                flash('Pass %d wurde ausgecheckt.' % pass_id, 'checkout')
+            assert checked_in or checked_out
+            return redirect(url_for('desk.home'))
+    return render_template('desk/passport.html', passport=passport, form=form)

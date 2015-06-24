@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
+{% from "macros.html" import field_errors %}
 
 {% block body %}
+<form method="post">
+    {{ form.csrf_token() }}
+    {{ form.pass_id() }}
+
+    <div class="check">
+        <label for="check">{{ passport.pass_id }}{{ form.check(autofocus=True, autocomplete='off', placeholder='Check-ID') }}</label>
+        {{ field_errors(form.check) }}
+    </div>
+
+    {% if passport.checked_in %}
+    <button name="checkout">Checkout</button>
+    <button name="checkin">Checkin</button>
+    {% else %}
+    <button name="checkin">Checkin</button>
+    <button name="checkout">Checkout</button>
+    {% endif %}
+</form>
+
+<div class="visits">
+    <ul>
+    {% for visit in passport.visits %}
+        <li>{{ visit.check_in }} – {{ visit.check_out }}</li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}
 
 {% block head %}

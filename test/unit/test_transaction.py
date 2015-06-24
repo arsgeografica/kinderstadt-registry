@@ -73,3 +73,14 @@ def test_check_out_closes_visit(app):
         db.session.expire_all()
 
         assert Passport.get(111).visits[0].check_out
+
+
+def test_is_checked_in_property(app):
+    """Check checked_in property works"""
+    with app.test_request_context():
+        passport = Passport.create('John', 'Doe', 111)
+        assert not passport.checked_in
+        passport.check_in()
+        assert passport.checked_in
+        passport.check_out()
+        assert not passport.checked_in

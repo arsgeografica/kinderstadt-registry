@@ -1,6 +1,26 @@
+# -*- coding: utf-8 -*-
+
 from flask.ext.wtf import Form
-from wtforms import IntegerField, StringField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import HiddenField, IntegerField, StringField
+from wtforms.validators import DataRequired, NumberRange, ValidationError
+from stdnum import luhn
+
+
+CHECK_ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXY'
+
+
+def check(value):
+    """
+    Creates two-digit check value for given input value
+    """
+
+    def _check(value):
+        return luhn.calc_check_digit(value, alphabet=CHECK_ALPHABET)
+
+    a = _check(value)
+    b = _check(str(value) + str(a))
+
+    return a + b
 
 
 class QuickSelectForm(Form):
@@ -10,3 +30,19 @@ class QuickSelectForm(Form):
 class ActivateForm(Form):
     surname = StringField(validators=[DataRequired()])
     name = StringField(validators=[DataRequired()])
+
+
+class TransactionForm(Form):
+    pass_id = HiddenField(validators=[DataRequired()])
+    check = StringField(validators=[DataRequired()])
+
+    def validate_check(form, field):
+        actual = form.check.data.lower()
+        expected = check(form.pass_id.data).lower()
+        if actual != expected:
+            raise ValidationError(u'Ungültige Check-ID')
+
+
+class ConfirmForm(Form):
+    pass_id = HiddenField(validators=[DataRequired()])
+    check = HiddenField(validators=[DataRequired()])

@@ -3,7 +3,9 @@
 {% block body %}
 <form method="post">
     {{ form.csrf_token() }}
-    <label for="pass_id">Pass-ID {{ form.pass_id() }}</label>
+    <div class="pass_id">
+        {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID') }}
+    </div>
 </form>
 {% endblock %}
 

@@ -54,6 +54,10 @@ class Passport(db.Model):
         """Property indicating whether the passport has any visits at all"""
         return len(self.visits) > 0
 
+    @property
+    def checked_in(self):
+        return len(self.visits) > 0 and not self.visits[0].check_out
+
     def check_in(self, when=None):
         """Check in passport, creating a new visit
 

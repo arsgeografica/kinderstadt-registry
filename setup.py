@@ -41,6 +41,7 @@ setup(
         'Flask==0.10.1',
         'path.py==7.3',
         'pgcli==0.17.0',
+        'python-stdnum==1.1',
     ],
     extras_require={
         'devel': [

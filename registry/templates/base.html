@@ -12,9 +12,18 @@
             <img src="{{ url_for('static', filename='assets/logo_dessopolis.svg') }}">
         </a>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}{% endwith %}
+
     {% block body %}{% endblock %}
+
     <div class="registry-version">registry {{ __version__ }}</div>
     {% block script %}{% endblock %}
-    {%- if PIWIK_HOST and PIWIK_ID %}{% include 'piwik.html' %}{% endif -%}
 </body>
 </html>
