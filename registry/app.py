@@ -46,6 +46,7 @@ def factory(config=None):
 
     app.add_url_rule('/', 'home', views.home)
     app.add_url_rule('/desk', 'desk.home', desk.home, methods=['GET', 'POST'])
+    app.add_url_rule('/desk/current', 'desk.current', desk.current)
     app.add_url_rule('/desk/<int:pass_id>/activate', 'desk.activate',
                      desk.activate, methods=['GET', 'POST'])
     app.add_url_rule('/desk/<int:pass_id>', 'desk.passport', desk.passport,

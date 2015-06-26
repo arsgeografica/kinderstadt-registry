@@ -23,7 +23,7 @@
 <div class="visits">
     <ul>
     {% for visit in passport.visits %}
-        <li>{{ visit.check_in }} – {{ visit.check_out }}</li>
+        <li>{% if visit.check_in %}{{ visit.check_in.strftime('%a, %H:%M') }}{% else %}<i class="fa fa-bolt"></i>{% endif %}{% if visit.check_out %} – {{ visit.check_out.strftime('%a, %H:%M') }}{% endif %}</li>
     {% endfor %}
     </ul>
 </div>

@@ -18,6 +18,11 @@ def home():
                            active_passes=Passport.active_passes())
 
 
+def current():
+    passes = Passport.active_passes().all()
+    return render_template('desk/current.html', passes=passes)
+
+
 def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
