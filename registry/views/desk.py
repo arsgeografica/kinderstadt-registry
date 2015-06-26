@@ -22,12 +22,16 @@ def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
 
-    form = ActivateForm(request.form)
+    form = ActivateForm(request.values)
+    status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
             Passport.create(form.surname.data, form.name.data, pass_id)
             return redirect(url_for('desk.passport', pass_id=pass_id))
-    return render_template('desk/activate.html', form=form, pass_id=pass_id)
+        else:
+            status_code = 406
+    return render_template('desk/activate.html', form=form, pass_id=pass_id), \
+        status_code
 
 
 def passport(pass_id):

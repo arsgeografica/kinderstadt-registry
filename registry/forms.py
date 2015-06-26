@@ -23,6 +23,13 @@ def check(value):
     return a + b
 
 
+def check_validator(pass_id, check_id):
+    actual = check_id.lower()
+    expected = check(pass_id).lower()
+    if actual != expected:
+        raise ValidationError(u'Ungültige Check-ID')
+
+
 class QuickSelectForm(Form):
     pass_id = IntegerField(validators=[DataRequired(), NumberRange(min=1)])
 
@@ -30,6 +37,11 @@ class QuickSelectForm(Form):
 class ActivateForm(Form):
     surname = StringField(validators=[DataRequired()])
     name = StringField(validators=[DataRequired()])
+    pass_id = HiddenField(validators=[DataRequired()])
+    check = StringField(validators=[DataRequired()])
+
+    def validate_check(form, field):
+        return check_validator(form.pass_id.data, form.check.data)
 
 
 class TransactionForm(Form):
@@ -37,10 +49,7 @@ class TransactionForm(Form):
     check = StringField(validators=[DataRequired()])
 
     def validate_check(form, field):
-        actual = form.check.data.lower()
-        expected = check(form.pass_id.data).lower()
-        if actual != expected:
-            raise ValidationError(u'Ungültige Check-ID')
+        return check_validator(form.pass_id.data, form.check.data)
 
 
 class ConfirmForm(Form):
