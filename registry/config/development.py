@@ -1,4 +1,3 @@
-import logging
+from registry.config.defaults import LOG_CONF
 
-# App specific settings
-LOG_LEVEL = logging.DEBUG
+LOG_CONF['loggers']['root']['level'] = 'DEBUG'
