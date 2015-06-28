@@ -1,6 +1,5 @@
-import pytest
 from datetime import datetime, timedelta
-from registry.models import Passport, DeactivatedException
+from registry.models import Passport
 from registry.extensions import db
 
 
@@ -41,15 +40,6 @@ def test_visit_activates_passport(app):
         passport = Passport.create('John', 'Doe', 111)
         passport.check_in()
         assert passport.is_active is True
-
-
-def test_deactivated_pass_cannot_check_in(app):
-    """Deactivated pass cannot be checked in"""
-    with app.test_request_context():
-        passport = Passport.create('Bad John', 'Doe', 111)
-        passport.deactivate()
-        with pytest.raises(DeactivatedException):
-            passport.check_in()
 
 
 def test_check_in_creates_visit(app):

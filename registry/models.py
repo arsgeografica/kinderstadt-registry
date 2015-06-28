@@ -1,19 +1,15 @@
 import logging
-from sqlalchemy import ForeignKey, case
+from sqlalchemy import ForeignKey
 from sqlalchemy.sql import desc, text
 from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.types import Boolean, DateTime, Integer, String
+from sqlalchemy.types import DateTime, Integer, String
 from registry.extensions import db
 from datetime import datetime
 from uuid import uuid4
-
-
-class DeactivatedException(Exception):
-    pass
 
 
 class Passport(db.Model):
@@ -26,7 +22,6 @@ class Passport(db.Model):
     pass_id = Column(Integer, nullable=False, unique=True)
     name = Column(String(length=128), nullable=False)
     surname = Column(String(length=128), nullable=False)
-    deactivated = Column(Boolean)
 
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')
@@ -64,9 +59,6 @@ class Passport(db.Model):
 
         :param when: timestamp to use for checkin, defaults to datetime.now()
         """
-        if self.deactivated:
-            raise DeactivatedException
-
         visit = Visit()
         visit.passport = self
         visit.check_in = when if when else datetime.now()
@@ -95,11 +87,6 @@ class Passport(db.Model):
         db.session.commit()
 
         return current_visit
-
-    def deactivate(self):
-        """Mark passport as deactivated, prohibiting new visits"""
-        self.deactivated = True
-        db.session.commit()
 
     @classmethod
     def get(cls, pass_id):
