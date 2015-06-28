@@ -29,7 +29,7 @@ def app(request, database):
 
     def fin():
         with app.app_context():
-            migrate_extension.downgrade()
+            migrate_extension.downgrade(revision='base')
 
     request.addfinalizer(fin)
 
