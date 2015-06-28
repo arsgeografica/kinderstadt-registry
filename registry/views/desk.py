@@ -1,7 +1,12 @@
 from logging import getLogger
 from flask import abort, flash, redirect, render_template, request, url_for
-from registry.forms import ActivateForm, QuickSelectForm, TransactionForm
+from registry.forms import ActivateForm, ConfirmForm, QuickSelectForm, \
+                           TransactionForm, check
 from registry.models import Passport
+
+
+CHECKIN_MESSAGE = 'Pass %d wurde eingecheckt.'
+CHECKOUT_MESSAGE = 'Pass %d wurde ausgecheckt.'
 
 
 def home():
@@ -44,25 +49,48 @@ def passport(pass_id):
     if not passport:
         abort(404)
 
-    form = TransactionForm(request.form, obj=passport)
+    form = TransactionForm(request.values, obj=passport)
     if 'POST' == request.method:
         if form.validate_on_submit():
             logger = getLogger(__name__)
             checked_in = checked_out = False
             if request.form.get('checkin') is not None:
                 if passport.checked_in:
-                    pass
+                    return redirect(url_for('desk.confirm_transaction',
+                                            pass_id=pass_id, action='checkin'))
                 passport.check_in()
                 logger.debug('Checked in pass id %d', passport.pass_id)
                 checked_in = True
-                flash('Pass %d wurde eingecheckt.' % pass_id, 'checkin')
+                flash(CHECKIN_MESSAGE % pass_id, 'checkin')
             elif request.form.get('checkout') is not None:
                 if not passport.checked_in:
-                    pass
+                    return redirect(url_for('desk.confirm_transaction',
+                                            pass_id=pass_id,
+                                            action='checkout'))
                 passport.check_out()
                 logger.debug('Checked out pass id %d', passport.pass_id)
                 checked_out = True
-                flash('Pass %d wurde ausgecheckt.' % pass_id, 'checkout')
+                flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
             assert checked_in or checked_out
             return redirect(url_for('desk.home'))
     return render_template('desk/passport.html', passport=passport, form=form)
+
+
+def confirm_transaction(pass_id, action):
+    assert action in ('checkin', 'checkout')
+    passport = Passport.get(pass_id)
+    if not passport:
+        abort(404)
+    if action == ('checkout' if passport.checked_in else 'checkin'):
+        abort(406)
+
+    form = ConfirmForm(obj=dict(pass_id=pass_id, check=check(pass_id)))
+    if request.method == 'POST' and form.validate_on_submit():
+        if action == 'checkin':
+            passport.check_in()
+            flash(CHECKIN_MESSAGE % pass_id, 'checkout')
+        else:
+            passport.check_out()
+            flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
+        return redirect(url_for('desk.home'))
+    return render_template('desk/confirm_transaction.html', form=form)

@@ -35,5 +35,7 @@ def factory(config=None):
                      desk.activate, methods=['GET', 'POST'])
     app.add_url_rule('/desk/<int:pass_id>', 'desk.passport', desk.passport,
                      methods=['GET', 'POST'])
-
+    app.add_url_rule('/desk/<int:pass_id>/confirm/<action>',
+                     'desk.confirm_transaction', desk.confirm_transaction,
+                     methods=['GET', 'POST'])
     return app

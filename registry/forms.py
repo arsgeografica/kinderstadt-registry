@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import logging
 from flask.ext.wtf import Form
 from wtforms import HiddenField, IntegerField, StringField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
@@ -27,6 +27,9 @@ def check_validator(pass_id, check_id):
     actual = check_id.lower()
     expected = check(pass_id).lower()
     if actual != expected:
+        logger = logging.getLogger(__name__)
+        logger.debug('Expected check %s for pass_id %d, but got %s',
+                     expected, actual, pass_id)
         raise ValidationError(u'Ungültige Check-ID')
 
 
