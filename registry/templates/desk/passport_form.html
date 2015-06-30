@@ -1,0 +1,47 @@
+{% from "macros.html" import field_errors %}
+
+{{ form.csrf_token() }}
+{{ form.pass_id() }}
+<div class="check col-xs-12">
+    <div class="col-xs-2">
+        <label for="check">Ausweis <span class="pass_id">{{ pass_id }}</span>:</label>
+    </div>
+    <div class="value col-xs-10">
+        {{ form.check(autofocus=True, autocomplete='off', placeholder='Check-ID') }}
+        {{ field_errors(form.check) }}
+    </div>
+    <div class="flags">
+    {% for key in flags %}
+        <div class="flag_{{ key }}">
+            <div class="col-xs-2">
+                {{ form.flags[key].label }}
+            </div>
+            <div class="value col-xs-10">
+                {{ form.flags[key] }}
+                {{ field_errors(form.flags[key]) }}
+            </div>
+        </div>
+    {% endfor %}
+    {{ field_errors(form.flags) }}
+    {{ form.flags.csrf_token() }}
+    </div>
+</div>
+
+<div class="surname col-xs-12">
+    <div class="col-xs-2">
+        <label for="surname">Vorname:</label>
+    </div>
+    <div class="value col-xs-10">
+        {{ form.surname() }}
+        {{ field_errors(form.surname) }}
+    </div>
+</div>
+<div class="name col-xs-12">
+    <div class="col-xs-2">
+        <label for="name">Name:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.name() }}
+        {{ field_errors(form.name) }}
+    </div>
+</div>

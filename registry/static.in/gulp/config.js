@@ -23,9 +23,9 @@ module.exports = {
     },
 
     code: {
-        bundles: [/*{
-            entries: 'order.js',
-        }*/],
+        bundles: [{
+            entries: 'registry.js',
+        }],
         srcBase: src,
         dst: dst,
         uglify: {

@@ -1,3 +1,4 @@
+import datetime
 import logging.config
 import logging.handlers
 import os.path
@@ -9,8 +10,25 @@ from registry import views
 from registry.views import desk
 
 
-def factory(config=None):
+def check_flags(app):
+    flags = app.config.get('FLAGS', {})
+    for key, config in flags.items():
+        if 'label' not in config:
+            raise ValueError('No label in FLAG config')
+        cci = ('can_checkin' in config and config['can_checkin'] == False)
+        cco = ('can_checkout' in config and config['can_checkout'] == False)
+        if not (cci or cco):
+            raise ValueError('can_checkin or can_checkout must be False')
 
+
+def check_event_duration(app):
+    event_from = app.config['EVENT_FROM']
+    assert isinstance(event_from, datetime.date)
+    event_to = app.config['EVENT_TO']
+    assert isinstance(event_to, datetime.date)
+
+
+def factory(config=None):
     app = Flask(__name__.split('.')[0])
 
     app.config.from_object('registry.config.defaults')
@@ -18,6 +36,8 @@ def factory(config=None):
         app.config.from_object(config)
 
     logging.config.dictConfig(app.config['LOG_CONF'])
+
+    check_flags(app)
 
     @app.context_processor
     def inject_version():
@@ -37,5 +57,7 @@ def factory(config=None):
                      methods=['GET', 'POST'])
     app.add_url_rule('/desk/<int:pass_id>/confirm/<action>',
                      'desk.confirm_transaction', desk.confirm_transaction,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/desk/<int:pass_id>/edit', 'desk.edit', desk.edit,
                      methods=['GET', 'POST'])
     return app

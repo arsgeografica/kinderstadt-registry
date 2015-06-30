@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.types import DateTime, Integer, String
 from registry.extensions import db
 from datetime import datetime
@@ -22,6 +22,7 @@ class Passport(db.Model):
     pass_id = Column(Integer, nullable=False, unique=True)
     name = Column(String(length=128), nullable=False)
     surname = Column(String(length=128), nullable=False)
+    flags = Column(JSONB)
 
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')

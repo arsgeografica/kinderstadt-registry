@@ -25,5 +25,6 @@
 
     <div class="registry-version">registry {{ __version__ }}</div>
     {% block script %}{% endblock %}
+    <script src="{{ url_for('static', filename='registry.js') }}"></script>
 </body>
 </html>

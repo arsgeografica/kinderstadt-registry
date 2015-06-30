@@ -1,4 +1,5 @@
 from path import Path
+import datetime
 
 
 _BASE_DIR = Path(__file__).abspath().dirname().dirname()
@@ -42,3 +43,18 @@ LOG_CONF = {
         }
     }
 }
+
+# Flags settings
+FLAGS = {
+    'disabled': {
+        'label': 'Gesperrt',
+        'can_checkin': False
+    },
+    'pickup': {
+        'label': 'Abholung erforderlich',
+        'can_checkout': False
+    }
+}
+
+START_DATE = datetime.date.today() - datetime.timedelta(days=3)
+END_DATE = datetime.date.today() + datetime.timedelta(days=3)

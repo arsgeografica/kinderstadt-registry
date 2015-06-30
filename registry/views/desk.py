@@ -1,8 +1,11 @@
 from logging import getLogger
-from flask import abort, flash, redirect, render_template, request, url_for
-from registry.forms import ActivateForm, ConfirmForm, QuickSelectForm, \
+from flask import abort, current_app, flash, redirect, render_template, \
+                  request, url_for
+from registry.extensions import db
+from registry.forms import ConfirmForm, PassportForm, QuickSelectForm, \
                            TransactionForm, check
 from registry.models import Passport
+from registry.fields import FlagField
 
 
 CHECKIN_MESSAGE = 'Pass %d wurde eingecheckt.'
@@ -32,7 +35,7 @@ def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
 
-    form = ActivateForm(request.values)
+    form = PassportForm(request.values)
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
@@ -94,3 +97,36 @@ def confirm_transaction(pass_id, action):
             flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
         return redirect(url_for('desk.home'))
     return render_template('desk/confirm_transaction.html', form=form)
+
+
+def edit(pass_id):
+    passport = Passport.get(pass_id)
+    if not passport:
+        abort(404)
+
+    from flask.ext.wtf import Form
+    from wtforms.fields import FormField
+
+    class FlagForm(Form):
+        pass
+
+    for flag, flag_config in current_app.config['FLAGS'].items():
+        setattr(FlagForm, flag,
+                FlagField(key=flag, label=flag_config['label'],
+                          start_date=current_app.config['START_DATE'],
+                          end_date=current_app.config['END_DATE']))
+    setattr(PassportForm, 'flags', FormField(FlagForm))
+
+    form = PassportForm(request.values, obj=passport)
+    status_code = 200
+    if 'POST' == request.method:
+        if form.validate_on_submit():
+            passport.flags = form.flags.data
+            db.session.commit()
+            flash('Die Passdaten wurden aktualisert.')
+            return redirect(url_for('desk.passport', pass_id=pass_id))
+        else:
+            status_code = 406
+    return render_template('desk/edit.html', form=form, pass_id=pass_id,
+                           flags=current_app.config['FLAGS'].keys()), \
+        status_code

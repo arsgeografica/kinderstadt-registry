@@ -4,6 +4,7 @@ from flask.ext.wtf import Form
 from wtforms import HiddenField, IntegerField, StringField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 from stdnum import luhn
+from registry.fields import FlagField
 
 
 CHECK_ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXY'
@@ -37,7 +38,7 @@ class QuickSelectForm(Form):
     pass_id = IntegerField(validators=[DataRequired(), NumberRange(min=1)])
 
 
-class ActivateForm(Form):
+class PassportForm(Form):
     surname = StringField(validators=[DataRequired()])
     name = StringField(validators=[DataRequired()])
     pass_id = HiddenField(validators=[DataRequired()])

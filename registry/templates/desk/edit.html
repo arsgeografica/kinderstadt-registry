@@ -5,7 +5,8 @@
     <form method="post">
         {% include 'desk/passport_form.html' %}
         <div class="col-xs-10 col-xs-offset-2">
-            <button class="btn btn-primary">Aktivieren</button>
+            <button class="btn btn-primary">Aktualisieren</button>
+            <a href="{{ url_for('desk.passport', pass_id=pass_id) }}" class="btn btn-primary">Abbrechen</a>
         </div>
     </form>
 </div>
