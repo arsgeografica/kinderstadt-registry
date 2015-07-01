@@ -11,19 +11,18 @@
         {{ field_errors(form.check) }}
     </div>
     <div class="flags">
-    {% for key in flags %}
-        <div class="flag_{{ key }}">
+    {% for flag in form.flags %}
+        <div class="flag_{{ flag.key }}">
             <div class="col-xs-2">
-                {{ form.flags[key].label }}
+                {{ flag.label }}
             </div>
             <div class="value col-xs-10">
-                {{ form.flags[key] }}
-                {{ field_errors(form.flags[key]) }}
+                {{ flag }}
+                {{ field_errors(flag) }}
             </div>
         </div>
     {% endfor %}
     {{ field_errors(form.flags) }}
-    {{ form.flags.csrf_token() }}
     </div>
 </div>
 

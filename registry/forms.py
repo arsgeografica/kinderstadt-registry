@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 from flask.ext.wtf import Form
+from wtforms.fields import FormField
+from wtforms.form import Form as WTForm
 from wtforms import HiddenField, IntegerField, StringField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 from stdnum import luhn
@@ -46,6 +48,20 @@ class PassportForm(Form):
 
     def validate_check(form, field):
         return check_validator(form.pass_id.data, form.check.data)
+
+
+def passport_form_factory(formdata, obj, flags, start_date, end_date):
+    class FlagForm(WTForm):
+        pass
+
+    for flag, flag_config in flags.items():
+        setattr(FlagForm, flag,
+                FlagField(key=flag, label=flag_config['label'],
+                          start_date=start_date, end_date=end_date))
+
+    PassportForm.flags = FormField(FlagForm)
+
+    return PassportForm(formdata, obj=obj)
 
 
 class TransactionForm(Form):

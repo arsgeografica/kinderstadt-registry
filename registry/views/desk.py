@@ -2,10 +2,9 @@ from logging import getLogger
 from flask import abort, current_app, flash, redirect, render_template, \
                   request, url_for
 from registry.extensions import db
-from registry.forms import ConfirmForm, PassportForm, QuickSelectForm, \
-                           TransactionForm, check
+from registry.forms import ConfirmForm, QuickSelectForm, TransactionForm
+from registry.forms import check, passport_form_factory
 from registry.models import Passport
-from registry.fields import FlagField
 
 
 CHECKIN_MESSAGE = 'Pass %d wurde eingecheckt.'
@@ -35,7 +34,11 @@ def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
 
-    form = PassportForm(request.values)
+    form = passport_form_factory(request.values, None,
+                                 current_app.config['FLAGS'],
+                                 current_app.config['START_DATE'],
+                                 current_app.config['END_DATE'])
+
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
@@ -104,20 +107,10 @@ def edit(pass_id):
     if not passport:
         abort(404)
 
-    from flask.ext.wtf import Form
-    from wtforms.fields import FormField
-
-    class FlagForm(Form):
-        pass
-
-    for flag, flag_config in current_app.config['FLAGS'].items():
-        setattr(FlagForm, flag,
-                FlagField(key=flag, label=flag_config['label'],
-                          start_date=current_app.config['START_DATE'],
-                          end_date=current_app.config['END_DATE']))
-    setattr(PassportForm, 'flags', FormField(FlagForm))
-
-    form = PassportForm(request.values, obj=passport)
+    form = passport_form_factory(request.values, passport,
+                                 current_app.config['FLAGS'],
+                                 current_app.config['START_DATE'],
+                                 current_app.config['END_DATE'])
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
