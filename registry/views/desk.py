@@ -1,9 +1,11 @@
+import datetime
 from logging import getLogger
 from flask import abort, current_app, flash, redirect, render_template, \
                   request, url_for
 from registry.extensions import db
-from registry.forms import ConfirmForm, QuickSelectForm, TransactionForm
-from registry.forms import check, passport_form_factory
+from registry.forms import ConfirmForm, QuickSelectForm
+from registry.forms import check, passport_form_factory, \
+    transaction_form_factory
 from registry.models import Passport
 
 
@@ -55,7 +57,17 @@ def passport(pass_id):
     if not passport:
         abort(404)
 
-    form = TransactionForm(request.values, obj=passport)
+    today = datetime.date.today().isoformat()
+    passport_flags = passport.flags if passport.flags else {}
+
+    active_flags = [(k, current_app.config['FLAGS'][k])
+                    for k, d in passport_flags.items() if today in d]
+    flag_filter = 'can_checkout' if passport.checked_in else 'can_checkin'
+    flags = dict([(k, f['label']) for (k, f) in active_flags
+                 if f.get(flag_filter) == False])
+
+    form = transaction_form_factory(request.values, passport, flags)
+    status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
             logger = getLogger(__name__)
@@ -79,7 +91,9 @@ def passport(pass_id):
                 flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
             assert checked_in or checked_out
             return redirect(url_for('desk.home'))
-    return render_template('desk/passport.html', passport=passport, form=form)
+        status_code = 406
+    return render_template('desk/passport.html',
+                           passport=passport, form=form), status_code
 
 
 def confirm_transaction(pass_id, action):

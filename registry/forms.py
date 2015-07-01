@@ -3,7 +3,7 @@ import logging
 from flask.ext.wtf import Form
 from wtforms.fields import FormField
 from wtforms.form import Form as WTForm
-from wtforms import HiddenField, IntegerField, StringField
+from wtforms import BooleanField, HiddenField, IntegerField, StringField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 from stdnum import luhn
 from registry.fields import FlagField
@@ -70,6 +70,18 @@ class TransactionForm(Form):
 
     def validate_check(form, field):
         return check_validator(form.pass_id.data, form.check.data)
+
+
+def transaction_form_factory(formdata, obj, flags):
+    class FlagForm(WTForm):
+        pass
+
+    for key, label in flags.items():
+        setattr(FlagForm, 'flag_%s' % key,
+                BooleanField(label=label, validators=[DataRequired()]))
+    TransactionForm.flags = FormField(FlagForm)
+
+    return TransactionForm(formdata, obj=obj)
 
 
 class ConfirmForm(Form):

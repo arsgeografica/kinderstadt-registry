@@ -11,6 +11,14 @@
         {{ field_errors(form.check) }}
     </div>
 
+    <div class="flags btn-group" data-toggle="buttons">
+    {% for flag in form.flags %}
+        <label class="flag-{{ flag.id }} btn btn-primary" for="{{ flag.id }}">
+            {{ flag }} {{ flag.label.text }}
+        </label>
+    {% endfor %}
+    </div>
+
     {% if passport.checked_in %}
     <button name="checkout">Checkout</button>
     <button name="checkin">Checkin</button>
