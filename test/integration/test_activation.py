@@ -31,8 +31,9 @@ def requirement(request):
 def test_passport_must_be_activated_first(app):
     client = app.test_client()
     with app.test_request_context():
-        post_url = url_for('desk.home')
-        expected_url = url_for('desk.activate', pass_id=111, _external=True)
+        post_url = url_for('passport.home')
+        expected_url = url_for('passport.activate', pass_id=111,
+                               _external=True)
 
         r = client.post(post_url, data=dict(pass_id=111))
 
@@ -45,7 +46,7 @@ def test_activation_can_only_be_called_once(app):
     with app.test_request_context():
         Passport.create('John', 'Doe', 111)
 
-        r = client.get(url_for('desk.activate', pass_id=111))
+        r = client.get(url_for('passport.activate', pass_id=111))
 
         assert r.status_code == 404
 
@@ -55,8 +56,9 @@ def test_activated_passport_gets_transaction(app):
     with app.test_request_context():
         Passport.create('John', 'Doe', 111)
 
-        post_url = url_for('desk.home')
-        expected_url = url_for('desk.passport', pass_id=111, _external=True)
+        post_url = url_for('passport.home')
+        expected_url = url_for('passport.passport', pass_id=111,
+                               _external=True)
 
         r = client.post(post_url, data=dict(pass_id=111))
 
@@ -69,13 +71,13 @@ def test_activation_requirements(app, user, requirement):
     pass_id = user['pass_id']
     client = app.test_client()
     with app.test_request_context():
-        post_url = url_for('desk.activate', pass_id=pass_id)
+        post_url = url_for('passport.activate', pass_id=pass_id)
         if required:
-            expected_url = url_for('desk.activate', pass_id=pass_id,
+            expected_url = url_for('passport.activate', pass_id=pass_id,
                                    _external=True)
             expected_status_code = 406
         else:
-            expected_url = url_for('desk.passport', pass_id=pass_id,
+            expected_url = url_for('passport.passport', pass_id=pass_id,
                                    _external=True)
             expected_status_code = 302
 

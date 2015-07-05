@@ -7,7 +7,7 @@ from registry.extensions import db, migrate
 from registry import __version__
 from registry import models
 from registry import views
-from registry.views import desk
+from registry.views import passport
 
 
 def check_flags(app):
@@ -48,16 +48,30 @@ def factory(config=None):
                                   'migrations')
     migrate.init_app(app, db, directory=migrations_dir)
 
-    app.add_url_rule('/', 'home', views.home)
-    app.add_url_rule('/desk', 'desk.home', desk.home, methods=['GET', 'POST'])
-    app.add_url_rule('/desk/current', 'desk.current', desk.current)
-    app.add_url_rule('/desk/<int:pass_id>/activate', 'desk.activate',
-                     desk.activate, methods=['GET', 'POST'])
-    app.add_url_rule('/desk/<int:pass_id>', 'desk.passport', desk.passport,
+    app.add_url_rule('/',
+                     'home',
+                     views.home)
+    app.add_url_rule('/passport',
+                     'passport.home',
+                     passport.home,
                      methods=['GET', 'POST'])
-    app.add_url_rule('/desk/<int:pass_id>/confirm/<action>',
-                     'desk.confirm_transaction', desk.confirm_transaction,
+    app.add_url_rule('/passport/current',
+                     'passport.current',
+                     passport.current)
+    app.add_url_rule('/passport/<int:pass_id>/activate',
+                     'passport.activate',
+                     passport.activate,
                      methods=['GET', 'POST'])
-    app.add_url_rule('/desk/<int:pass_id>/edit', 'desk.edit', desk.edit,
+    app.add_url_rule('/passport/<int:pass_id>',
+                     'passport.passport',
+                     passport.passport,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/passport/<int:pass_id>/confirm/<action>',
+                     'passport.confirm_transaction',
+                     passport.confirm_transaction,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/passport/<int:pass_id>/edit',
+                     'passport.edit',
+                     passport.edit,
                      methods=['GET', 'POST'])
     return app

@@ -5,7 +5,7 @@
 <ul class="active-passes">
 {% for pass in passes %}
     <li>
-        <a href="{{ url_for('desk.passport', pass_id=pass.pass_id) }}">
+        <a href="{{ url_for('passport.passport', pass_id=pass.pass_id) }}">
             <span>{{ pass.pass_id }}</span>
             <span>{{ pass.visits[0].check_in.strftime('%H:%M') }}</span>
         </a>

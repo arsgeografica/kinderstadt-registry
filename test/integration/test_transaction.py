@@ -10,7 +10,7 @@ def test_transaction_confirm_stops_with_406_if_no_default(app):
         passport = Passport.create('John', 'Doe', 111)
 
         def confirm(pass_id, action):
-            return client.get(url_for('desk.confirm_transaction',
+            return client.get(url_for('passport.confirm_transaction',
                                       pass_id=pass_id, action=action))
 
         passport.check_in()
@@ -26,51 +26,53 @@ def test_non_default_transaction_needs_confirmation(app):
         def transaction(pass_id, action):
             data = dict(pass_id=pass_id, check=check(pass_id))
             data[action] = True
-            return client.post(url_for('desk.passport', pass_id=pass_id),
+            return client.post(url_for('passport.passport', pass_id=pass_id),
                                data=data)
 
         def confirm(pass_id, action):
             data = dict(pass_id=pass_id, check=check(pass_id))
-            return client.post(url_for('desk.confirm_transaction',
+            return client.post(url_for('passport.confirm_transaction',
                                        pass_id=pass_id, action=action),
                                data=data)
 
         # First checkin
         r = transaction(passport.pass_id, 'checkin')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)
 
         # Second checkin, must be confirmed
         r = transaction(passport.pass_id, 'checkin')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.confirm_transaction',
-                                                    pass_id=passport.pass_id,
-                                                    action='checkin',
-                                                    _external=True)
+        expected_location = url_for('passport.confirm_transaction',
+                                    pass_id=passport.pass_id,
+                                    action='checkin',
+                                    _external=True)
+        assert r.headers.get('Location') == expected_location
         # Confirm
         r = confirm(passport.pass_id, 'checkin')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)
 
         # Checkout, back to normal
         r = transaction(passport.pass_id, 'checkout')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)
 
         # Checkout again, must be confirmed
         r = transaction(passport.pass_id, 'checkout')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.confirm_transaction',
-                                                    pass_id=passport.pass_id,
-                                                    action='checkout',
-                                                    _external=True)
+        expected_location = url_for('passport.confirm_transaction',
+                                    pass_id=passport.pass_id,
+                                    action='checkout',
+                                    _external=True)
+        assert r.headers.get('Location') == expected_location
         # Confirm
         r = confirm(passport.pass_id, 'checkout')
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)
 
 
@@ -96,7 +98,7 @@ def test_flagged_passport_needs_override(app):
             data = dict(pass_id=pass_id, check=check(pass_id))
             data[action] = True
             data.update(extra_data)
-            return client.post(url_for('desk.passport', pass_id=pass_id),
+            return client.post(url_for('passport.passport', pass_id=pass_id),
                                data=data)
 
         r = transaction(passport.pass_id, 'checkin')
@@ -106,7 +108,7 @@ def test_flagged_passport_needs_override(app):
             'flags-flag_login': True
         })
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)
 
         r = transaction(passport.pass_id, 'checkout')
@@ -116,5 +118,5 @@ def test_flagged_passport_needs_override(app):
             'flags-flag_logout': True
         })
         assert r.status_code == 302
-        assert r.headers.get('Location') == url_for('desk.home',
+        assert r.headers.get('Location') == url_for('passport.home',
                                                     _external=True)

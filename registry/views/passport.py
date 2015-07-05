@@ -19,17 +19,17 @@ def home():
         if form.validate_on_submit():
             pass_id = form.pass_id.data
             if Passport.get(pass_id):
-                return redirect(url_for('desk.passport', pass_id=pass_id))
+                return redirect(url_for('passport.passport', pass_id=pass_id))
             else:
-                return redirect(url_for('desk.activate', pass_id=pass_id))
+                return redirect(url_for('passport.activate', pass_id=pass_id))
 
-    return render_template('desk/home.html', form=form,
+    return render_template('passport/home.html', form=form,
                            active_passes=Passport.active_passes())
 
 
 def current():
     passes = Passport.active_passes().all()
-    return render_template('desk/current.html', passes=passes)
+    return render_template('passport/current.html', passes=passes)
 
 
 def activate(pass_id):
@@ -45,10 +45,10 @@ def activate(pass_id):
     if 'POST' == request.method:
         if form.validate_on_submit():
             Passport.create(form.surname.data, form.name.data, pass_id)
-            return redirect(url_for('desk.passport', pass_id=pass_id))
+            return redirect(url_for('passport.passport', pass_id=pass_id))
         else:
             status_code = 406
-    return render_template('desk/activate.html', form=form, pass_id=pass_id), \
+    return render_template('passport/activate.html', form=form, pass_id=pass_id), \
         status_code
 
 
@@ -74,7 +74,7 @@ def passport(pass_id):
             checked_in = checked_out = False
             if request.form.get('checkin') is not None:
                 if passport.checked_in:
-                    return redirect(url_for('desk.confirm_transaction',
+                    return redirect(url_for('passport.confirm_transaction',
                                             pass_id=pass_id, action='checkin'))
                 passport.check_in()
                 logger.debug('Checked in pass id %d', passport.pass_id)
@@ -82,7 +82,7 @@ def passport(pass_id):
                 flash(CHECKIN_MESSAGE % pass_id, 'checkin')
             elif request.form.get('checkout') is not None:
                 if not passport.checked_in:
-                    return redirect(url_for('desk.confirm_transaction',
+                    return redirect(url_for('passport.confirm_transaction',
                                             pass_id=pass_id,
                                             action='checkout'))
                 passport.check_out()
@@ -90,9 +90,9 @@ def passport(pass_id):
                 checked_out = True
                 flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
             assert checked_in or checked_out
-            return redirect(url_for('desk.home'))
+            return redirect(url_for('passport.home'))
         status_code = 406
-    return render_template('desk/passport.html',
+    return render_template('passport/passport.html',
                            passport=passport, form=form), status_code
 
 
@@ -112,8 +112,8 @@ def confirm_transaction(pass_id, action):
         else:
             passport.check_out()
             flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
-        return redirect(url_for('desk.home'))
-    return render_template('desk/confirm_transaction.html', form=form)
+        return redirect(url_for('passport.home'))
+    return render_template('passport/confirm_transaction.html', form=form)
 
 
 def edit(pass_id):
@@ -131,9 +131,9 @@ def edit(pass_id):
             passport.flags = form.flags.data
             db.session.commit()
             flash('Die Passdaten wurden aktualisert.')
-            return redirect(url_for('desk.passport', pass_id=pass_id))
+            return redirect(url_for('passport.passport', pass_id=pass_id))
         else:
             status_code = 406
-    return render_template('desk/edit.html', form=form, pass_id=pass_id,
+    return render_template('passport/edit.html', form=form, pass_id=pass_id,
                            flags=current_app.config['FLAGS'].keys()), \
         status_code
