@@ -113,7 +113,8 @@ def confirm_transaction(pass_id, action):
             passport.check_out()
             flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
         return redirect(url_for('passport.home'))
-    return render_template('passport/confirm_transaction.html', form=form)
+    return render_template('passport/confirm_transaction.html', form=form,
+                           passport=passport)
 
 
 def edit(pass_id):

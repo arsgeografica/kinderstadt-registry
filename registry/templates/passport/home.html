@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<form method="post">
-    {{ form.csrf_token() }}
-    <div class="pass_id">
-        {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID') }}
+<div class="jumbotron">
+    <div class="page-header">
+        <h1>Pass-Startseite <small>Gib eine Pass-ID ein.</small></h1>
     </div>
-</form>
-<div class="active-counter">
-    Es sind <a href="{{ url_for('passport.current') }}" class="counter">{{ active_passes.count() }}</a> Kinder anwesend.
+
+    <form method="post">
+        {{ form.csrf_token() }}
+        <div class="pass_id input-group">
+            {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID', class="form-control") }}
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Los!</button>
+            </span>
+        </div>
+    </form>
 </div>
 {% endblock %}
 

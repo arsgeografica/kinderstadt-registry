@@ -4,14 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
     {% block head %}{% endblock %}
 </head>
 <body class="container {%- if body_class %} {{ body_class }}{% endif %}">
-    <div class="logo">
-        <a href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='assets/logo_dessopolis.svg2') }}">
-        </a>
-    </div>
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Menü</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='assets/logo_dessopolis.svg') }}">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('home') }}">Startseite</a></li>
+                <li><a href="{{ url_for('passport.home') }}">Pässe</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="active-counter" href="{{ url_for('passport.current') }}"><span class="badge">{{ active_passport_count }}</span> Aktive</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
     <ul class=flashes>

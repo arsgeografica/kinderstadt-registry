@@ -41,7 +41,10 @@ def factory(config=None):
 
     @app.context_processor
     def inject_version():
-        return dict(__version__=__version__)
+        apc = models.Passport.active_passes().count()
+        return dict(
+            active_passport_count=apc,
+            __version__=__version__)
 
     db.init_app(app)
     migrations_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),

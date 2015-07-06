@@ -1,46 +1,44 @@
-{% from "macros.html" import field_errors %}
+{% from "macros.html" import field_row, field_errors %}
 
 {{ form.csrf_token() }}
 {{ form.pass_id() }}
-<div class="check col-xs-12">
+
+<div class="check row">
     <div class="col-xs-2">
         <label for="check">Ausweis <span class="pass_id">{{ pass_id }}</span>:</label>
     </div>
     <div class="value col-xs-10">
-        {{ form.check(autofocus=True, autocomplete='off', placeholder='Check-ID') }}
+        {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}
         {{ field_errors(form.check) }}
     </div>
-    <div class="flags">
-    {% for flag in form.flags %}
-        <div class="flag_{{ flag.key }}">
-            <div class="col-xs-2">
-                {{ flag.label }}
-            </div>
-            <div class="value col-xs-10">
-                {{ flag }}
-                {{ field_errors(flag) }}
-            </div>
-        </div>
-    {% endfor %}
-    {{ field_errors(form.flags) }}
+</div>
+{% for flag in form.flags %}
+<div class="flags flag_{{ flag.key }} row">
+    <div class="col-xs-2">
+        {{ flag.label }}:
+    </div>
+    <div class="value col-xs-10">
+        {{ flag }}
+        {{ field_errors(flag) }}
     </div>
 </div>
+{% endfor %}
 
-<div class="surname col-xs-12">
+<div class="surname row">
     <div class="col-xs-2">
         <label for="surname">Vorname:</label>
     </div>
     <div class="value col-xs-10">
-        {{ form.surname() }}
+        {{ form.surname(class='form-control') }}
         {{ field_errors(form.surname) }}
     </div>
 </div>
-<div class="name col-xs-12">
+<div class="name row">
     <div class="col-xs-2">
         <label for="name">Name:</label>
     </div>
     <div class="col-xs-10">
-        {{ form.name() }}
+        {{ form.name(class='form-control') }}
         {{ field_errors(form.name) }}
     </div>
 </div>

@@ -1,0 +1,19 @@
+{% if passport.visits %}
+<ul class="visits">
+{% for visit in passport.visits %}
+    <li>
+        {% if visit.check_in %}
+        <span class="checkin label label-success">{{ visit.check_in.strftime('%a, %H:%M') }}</span>
+        {% else %}
+        <span class="checkin label label-danger">???</span>
+        {% endif %}
+        {% if visit.check_out %}
+        –
+        <span class="checkout label label-success">{{ visit.check_out.strftime('%a, %H:%M') }}</span>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Bisher haben wir keine Aktivitäten für diesen Pass.</p>
+{% endif %}

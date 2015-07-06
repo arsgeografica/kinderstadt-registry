@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="row">
-    <form method="post">
-        {% include 'passport/passport_form.html' %}
-        <div class="col-xs-10 col-xs-offset-2">
-            <button class="btn btn-primary">Aktivieren</button>
-        </div>
-    </form>
+<div class="page-header">
+    <h1>Pass-Aktivierung <small>Bitte gib die Passdaten ein.</small></h1>
 </div>
+
+<form method="post">
+    {% include 'passport/passport_form.html' %}
+    <div class="actions row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <div class="btn-group">
+                <button class="btn btn-primary btn-lg">Aktivieren</button>
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.home') }}">Abbrechen</a>
+            </div>
+        </div>
+    </div>
+</form>
 {% endblock %}
 
 {% block head %}

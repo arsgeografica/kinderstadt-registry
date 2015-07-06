@@ -44,7 +44,6 @@ module.exports = {
 
     styles: {
         src: [
-            src + '/home.less',
             src + '/registry.less',
         ],
         srcBase: src,

@@ -1,1 +1,68 @@
-@import 'base';
+// First some includes
+@import 'bootstrap/less/bootstrap';
+@import 'bootstrap-em';
+@import 'font-awesome/less/font-awesome';
+
+// Then some variable definitions
+@brand-primary: #d22027;
+@fa-font-path: 'fonts';
+@font-size-root: 15px;
+
+// General styles
+.registry-version {
+    color: #888;
+    font-size: 0.75em;
+    text-align: center;
+}
+
+.navbar-brand img {
+    width: 5em;
+}
+
+form {
+    .row {
+        margin-bottom: 1em;
+    }
+}
+
+form .alert-danger {
+    li {
+        margin-left: 1em;
+    }
+}
+
+.active-counter {
+    .badge {
+        background: @brand-primary;
+    }
+}
+
+// Styles for home view
+.routes {
+    text-align: center;
+    .btn {
+        @font-size: 4em;
+        @size: 6em;
+        display: inline-block;
+        width: @size;
+        height: @size;
+        line-height: @size;
+        font-size: @font-size;
+    }
+}
+
+// Styles for passport.passport view
+.visits {
+    margin-top: 2em;
+    padding-top: 2em;
+    border-top: 1px solid @gray-lighter;
+    list-style-type: none;
+
+    .checkin, .checkout {
+        display: inline-block;
+        width: 8em;
+        text-align: center;
+        padding: 1em;
+        margin-bottom: 0.5em;
+    }
+}

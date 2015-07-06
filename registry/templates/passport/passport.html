@@ -2,13 +2,22 @@
 {% from "macros.html" import field_errors %}
 
 {% block body %}
+<div class="page-header">
+    <h1>Pass {{ passport.pass_id}} <small>Pass ein-, auschecken oder bearbeiten.</small></h1>
+</div>
+
 <form method="post">
     {{ form.csrf_token() }}
     {{ form.pass_id() }}
 
-    <div class="check">
-        <label for="check">{{ passport.pass_id }}{{ form.check(autofocus=True, autocomplete='off', placeholder='Check-ID') }}</label>
-        {{ field_errors(form.check) }}
+    <div class="check row">
+        <div class="col-xs-2">
+            <label for="check">Pass #{{ passport.pass_id }}</label>
+        </div>
+        <div class="col-xs-10">
+            {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}
+            {{ field_errors(form.check) }}
+        </div>
     </div>
 
     <div class="flags btn-group" data-toggle="buttons">
@@ -19,26 +28,27 @@
     {% endfor %}
     </div>
 
-    {% if passport.checked_in %}
-    <button name="checkout">Checkout</button>
-    <button name="checkin">Checkin</button>
-    {% else %}
-    <button name="checkin">Checkin</button>
-    <button name="checkout">Checkout</button>
-    {% endif %}
+    <div class="actions row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <div class="btn-group">
+                {% if passport.checked_in %}
+                <button class="btn btn-primary btn-lg" name="checkout">Checkout</button>
+                <button class="btn btn-default btn-lg" name="checkin">Checkin</button>
+                {% else %}
+                <button class="btn btn-primary btn-lg" name="checkin">Checkin</button>
+                <button class="btn btn-default btn-lg" name="checkout">Checkout</button>
+                {% endif %}
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.edit', pass_id=passport.pass_id) }}">Bearbeiten</a>
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.home', pass_id=passport.home) }}">Abbrechen</a>
+            </div>
+        </div>
+    </div>
 </form>
 
-<div class="edit">
-    <a href="{{ url_for('passport.edit', pass_id=passport.pass_id) }}" class="btn">Bearbeiten</a>
-</div>
-
-<div class="visits">
-    <ul>
-    {% for visit in passport.visits %}
-        <li>{% if visit.check_in %}{{ visit.check_in.strftime('%a, %H:%M') }}{% else %}<i class="fa fa-bolt"></i>{% endif %}{% if visit.check_out %} – {{ visit.check_out.strftime('%a, %H:%M') }}{% endif %}</li>
-    {% endfor %}
-    </ul>
-</div>
+<section class="visits">
+    <h1>Protokoll</h1>
+    {% include 'passport/visits.html' %}
+</section>
 {% endblock %}
 
 {% block head %}
