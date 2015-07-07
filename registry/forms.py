@@ -87,3 +87,7 @@ def transaction_form_factory(formdata, obj, flags):
 class ConfirmForm(Form):
     pass_id = HiddenField(validators=[DataRequired()])
     check = HiddenField(validators=[DataRequired()])
+
+
+class SweepForm(Form):
+    pass

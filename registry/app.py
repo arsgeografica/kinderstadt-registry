@@ -61,6 +61,10 @@ def factory(config=None):
     app.add_url_rule('/passport/current',
                      'passport.current',
                      passport.current)
+    app.add_url_rule('/passport/current/sweep',
+                     'passport.sweep',
+                     passport.sweep,
+                     methods=['GET', 'POST'])
     app.add_url_rule('/passport/<int:pass_id>/activate',
                      'passport.activate',
                      passport.activate,

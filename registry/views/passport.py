@@ -1,12 +1,14 @@
+# -*- encoding: utf-8 -*-
+
 import datetime
 from logging import getLogger
 from flask import abort, current_app, flash, redirect, render_template, \
                   request, url_for
 from registry.extensions import db
-from registry.forms import ConfirmForm, QuickSelectForm
+from registry.forms import ConfirmForm, QuickSelectForm, SweepForm
 from registry.forms import check, passport_form_factory, \
     transaction_form_factory
-from registry.models import Passport
+from registry.models import Passport, Visit
 
 
 CHECKIN_MESSAGE = 'Pass %d wurde eingecheckt.'
@@ -30,6 +32,20 @@ def home():
 def current():
     passes = Passport.active_passes().all()
     return render_template('passport/current.html', passes=passes)
+
+
+def sweep():
+    form = SweepForm(request.values)
+    active_count = Passport.active_passes().count()
+    status_code = 200
+    if 'POST' == request.method:
+        if form.validate():
+            Visit.sweep()
+            flash('Es wurden %d Pässe ausgecheckt' % active_count, 'success')
+            return redirect(url_for('home'))
+        status_code = 406
+    return render_template('passport/sweep.html',
+                           form=form, active_count=active_count), status_code
 
 
 def activate(pass_id):

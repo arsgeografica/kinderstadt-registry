@@ -7,7 +7,7 @@ from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.types import DateTime, Integer, String
+from sqlalchemy.types import Boolean, DateTime, Integer, String
 from registry.extensions import db
 from datetime import datetime
 from uuid import uuid4
@@ -130,6 +130,7 @@ class Visit(db.Model):
                          index=True)
     check_in = Column(DateTime(timezone=False), index=True)
     check_out = Column(DateTime(timezone=False), index=True)
+    sweeped = Column(Boolean, nullable=True)
 
     @hybrid_property
     def timestamp(self):
@@ -144,3 +145,11 @@ class Visit(db.Model):
     def is_open(self):
         """Shorthand property to check if visit is still open"""
         return self.check_out is None
+
+    @classmethod
+    def sweep(cls):
+        Visit.query \
+            .filter(Visit.check_out == None) \
+            .update({Visit.sweeped: True, Visit.check_out: datetime.now()})
+        db.session.flush()
+        db.session.commit()
