@@ -124,7 +124,8 @@ def confirm_transaction(pass_id, action):
     if action == ('checkout' if passport.checked_in else 'checkin'):
         abort(406)
 
-    form = ConfirmForm(obj=dict(pass_id=pass_id, check=check(pass_id)))
+    form = ConfirmForm(obj=Passport(pass_id=pass_id),
+                       data=dict(check=check(pass_id)))
     if request.method == 'POST' and form.validate_on_submit():
         if action == 'checkin':
             passport.check_in()
