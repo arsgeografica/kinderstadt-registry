@@ -12,17 +12,6 @@
         {{ field_errors(form.check) }}
     </div>
 </div>
-{% for flag in form.flags %}
-<div class="flags flag_{{ flag.key }} row">
-    <div class="col-xs-2">
-        {{ flag.label }}:
-    </div>
-    <div class="value col-xs-10">
-        {{ flag }}
-        {{ field_errors(flag) }}
-    </div>
-</div>
-{% endfor %}
 
 <div class="surname row">
     <div class="col-xs-2">
@@ -42,3 +31,15 @@
         {{ field_errors(form.name) }}
     </div>
 </div>
+
+{% for flag in form.flags %}
+<div class="flags flag_{{ flag.key }} row">
+    <div class="col-xs-2">
+        {{ flag.label }}:
+    </div>
+    <div class="value col-xs-10">
+        {{ flag }}
+        {{ field_errors(flag) }}
+    </div>
+</div>
+{% endfor %}

@@ -52,7 +52,7 @@ def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
 
-    form = passport_form_factory(request.values, None,
+    form = passport_form_factory(request.values, dict(pass_id=pass_id),
                                  current_app.config['FLAGS'],
                                  current_app.config['START_DATE'],
                                  current_app.config['END_DATE'])
@@ -64,8 +64,8 @@ def activate(pass_id):
             return redirect(url_for('passport.passport', pass_id=pass_id))
         else:
             status_code = 406
-    return render_template('passport/activate.html', form=form, pass_id=pass_id), \
-        status_code
+    return render_template('passport/activate.html',
+                           form=form, pass_id=pass_id), status_code
 
 
 def passport(pass_id):
