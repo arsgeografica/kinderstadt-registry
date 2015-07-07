@@ -22,13 +22,20 @@
         </div>
     </div>
 
-    <div class="flags btn-group" data-toggle="buttons">
-    {% for flag in form.flags %}
-        <label class="flag-{{ flag.id }} btn btn-primary" for="{{ flag.id }}">
-            {{ flag }} {{ flag.label.text }}
-        </label>
-    {% endfor %}
+    {% if form.flags %}
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <p>Folgende Sperren müssen bestätigt werden:</p>
+            <div class="flags btn-group" data-toggle="buttons">
+            {% for flag in form.flags %}
+                <label class="flag-{{ flag.id }} btn btn-primary" for="{{ flag.id }}">
+                    {{ flag }} {{ flag.label.text }}
+                </label>
+            {% endfor %}
+            </div>
+        </div>
     </div>
+    {% endif %}
 
     <div class="actions row">
         <div class="col-xs-10 col-xs-offset-2">
