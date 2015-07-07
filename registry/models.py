@@ -7,7 +7,7 @@ from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.types import Boolean, DateTime, Integer, String
+from sqlalchemy.types import Boolean, DateTime, Integer, String, Text
 from registry.extensions import db
 from datetime import datetime
 from uuid import uuid4
@@ -23,6 +23,10 @@ class Passport(db.Model):
     pass_id = Column(Integer, nullable=False, unique=True)
     name = Column(String(length=128), nullable=False)
     surname = Column(String(length=128), nullable=False)
+    address = Column(Text(), nullable=False)
+    phone = Column(String(length=128), nullable=False)
+    email = Column(String(length=128))
+    notes = Column(Text())
     flags = Column(MutableDict.as_mutable(JSONB))
 
     visits = relationship('Visit', backref=backref('passport'),
