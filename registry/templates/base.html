@@ -35,7 +35,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}
     <ul class=flashes>
     {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
+        <li class="alert alert-{{ category }}">{{ message.decode('utf-8') }}</li>
     {% endfor %}
     </ul>
     {% endif %}{% endwith %}
