@@ -3,7 +3,8 @@ import logging
 from flask.ext.wtf import Form
 from wtforms.fields import FormField
 from wtforms.form import Form as WTForm
-from wtforms import BooleanField, HiddenField, IntegerField, StringField
+from wtforms import BooleanField, HiddenField, IntegerField, StringField, \
+    TextAreaField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 from stdnum import luhn
 from registry.fields import FlagField
@@ -45,6 +46,10 @@ class PassportForm(Form):
     name = StringField(validators=[DataRequired()])
     pass_id = HiddenField(validators=[DataRequired()])
     check = StringField(validators=[DataRequired()])
+    address = TextAreaField(validators=[DataRequired()])
+    phone = StringField(validators=[DataRequired()])
+    email = StringField()
+    notes = TextAreaField()
 
     def validate_check(form, field):
         return check_validator(form.pass_id.data, form.check.data)

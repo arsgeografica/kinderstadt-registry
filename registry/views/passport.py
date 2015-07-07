@@ -52,7 +52,7 @@ def activate(pass_id):
     if Passport.get(pass_id):
         abort(404)
 
-    form = passport_form_factory(request.values, dict(pass_id=pass_id),
+    form = passport_form_factory(request.values, Passport(pass_id=pass_id),
                                  current_app.config['FLAGS'],
                                  current_app.config['START_DATE'],
                                  current_app.config['END_DATE'])
@@ -60,7 +60,11 @@ def activate(pass_id):
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
-            Passport.create(form.surname.data, form.name.data, pass_id)
+            passport = Passport()
+            passport.flags = {}
+            form.populate_obj(passport)
+            db.session.add(passport)
+            db.session.commit()
             return redirect(url_for('passport.passport', pass_id=pass_id))
         else:
             status_code = 406

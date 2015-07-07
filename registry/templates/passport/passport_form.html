@@ -32,6 +32,46 @@
     </div>
 </div>
 
+<div class="address row">
+    <div class="col-xs-2">
+        <label for="address">Adresse:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.address(class='form-control') }}
+        {{ field_errors(form.address) }}
+    </div>
+</div>
+
+<div class="phone row">
+    <div class="col-xs-2">
+        <label for="phone">Telefon:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.phone(class='form-control') }}
+        {{ field_errors(form.phone) }}
+    </div>
+</div>
+
+<div class="email row">
+    <div class="col-xs-2">
+        <label for="email">Email:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.email(class='form-control') }}
+        {{ field_errors(form.email) }}
+    </div>
+</div>
+
+<div class="notes row">
+    <div class="col-xs-2">
+        <label for="notes">Bemerkungen:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.notes(class='form-control') }}
+        {{ field_errors(form.notes) }}
+    </div>
+</div>
+
 {% for flag in form.flags %}
 <div class="flags flag_{{ flag.key }} row">
     <div class="col-xs-2">
