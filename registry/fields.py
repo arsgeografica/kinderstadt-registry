@@ -23,3 +23,6 @@ class FlagField(MultiCheckboxField):
         kwargs['choices'] = choices
 
         return super(FlagField, self).__init__(*args, **kwargs)
+
+    def populate_obj(self, obj, name):
+        obj[name] = self.data

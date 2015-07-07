@@ -129,7 +129,7 @@ def edit(pass_id):
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
-            passport.flags = form.flags.data
+            form.populate_obj(passport)
             db.session.commit()
             flash('Die Passdaten wurden aktualisert.')
             return redirect(url_for('passport.passport', pass_id=pass_id))
