@@ -45,17 +45,22 @@ class PassportForm(Form):
     surname = StringField(validators=[DataRequired()])
     name = StringField(validators=[DataRequired()])
     pass_id = HiddenField(validators=[DataRequired()])
-    check = StringField(validators=[DataRequired()])
-    address = TextAreaField(validators=[DataRequired()])
+    address = TextAreaField()
     phone = StringField(validators=[DataRequired()])
     email = StringField()
     notes = TextAreaField()
+    age = IntegerField(validators=[DataRequired(), NumberRange(min=0)])
+
+
+class CheckedPassportForm(PassportForm):
+    check = StringField(validators=[DataRequired()])
 
     def validate_check(form, field):
         return check_validator(form.pass_id.data, form.check.data)
 
 
-def passport_form_factory(formdata, obj, flags, start_date, end_date):
+def passport_form_factory(formdata, obj, flags, start_date, end_date,
+                          checked=True):
     class FlagForm(WTForm):
         pass
 
@@ -64,9 +69,10 @@ def passport_form_factory(formdata, obj, flags, start_date, end_date):
                 FlagField(key=flag, label=flag_config['label'],
                           start_date=start_date, end_date=end_date))
 
-    PassportForm.flags = FormField(FlagForm)
+    Form = CheckedPassportForm if checked else PassportForm
+    Form.flags = FormField(FlagForm)
 
-    return PassportForm(formdata, obj=obj)
+    return Form(formdata, obj=obj)
 
 
 class TransactionForm(Form):

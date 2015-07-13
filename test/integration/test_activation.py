@@ -11,7 +11,10 @@ def user(request):
         'pass_id': 111,
         'check': 'u5',
         'surname': 'Heiko',
-        'name': 'Bär'
+        'name': 'Bär',
+        'age': 12,
+        'phone': '0123456789',
+        'address': 'Musterweg 1\nMusterstadt'
     }
 
 
@@ -20,7 +23,10 @@ PASS_REQUIREMENTS = {
     'pass_id': True,
     'check': True,
     'surname': True,
-    'name': True
+    'name': True,
+    'age': True,
+    'phone': True,
+    'address': False
 }
 
 
@@ -45,7 +51,8 @@ def test_passport_must_be_activated_first(app):
 def test_activation_can_only_be_called_once(app):
     client = app.test_client()
     with app.test_request_context():
-        db.session.add(Passport(surname='John', name='Doe', pass_id=111))
+        db.session.add(Passport(surname='John', name='Doe', pass_id=111,
+                                phone='123', age=7, address='Musterweg'))
         db.session.commit()
 
         r = client.get(url_for('passport.activate', pass_id=111))
@@ -56,7 +63,8 @@ def test_activation_can_only_be_called_once(app):
 def test_activated_passport_gets_transaction(app):
     client = app.test_client()
     with app.test_request_context():
-        db.session.add(Passport(surname='John', name='Doe', pass_id=111))
+        db.session.add(Passport(surname='John', name='Doe', pass_id=111,
+                                phone='123', age=7, address='Musterweg'))
         db.session.commit()
 
         post_url = url_for('passport.home')

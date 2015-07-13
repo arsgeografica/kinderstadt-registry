@@ -8,7 +8,8 @@ from registry.extensions import db
 def test_transaction_confirm_stops_with_406_if_no_default(app):
     client = app.test_client()
     with app.test_request_context():
-        passport = Passport(surname='John', name='Doe', pass_id=111)
+        passport = Passport(surname='John', name='Doe', pass_id=111,
+                            phone='123', age=7, address='Musterweg')
         db.session.add(passport)
         db.session.commit()
 
@@ -24,7 +25,8 @@ def test_transaction_confirm_stops_with_406_if_no_default(app):
 def test_non_default_transaction_needs_confirmation(app):
     client = app.test_client()
     with app.test_request_context():
-        passport = Passport(surname='John', name='Doe', pass_id=111)
+        passport = Passport(surname='John', name='Doe', pass_id=111,
+                            phone='123', age=7, address='Musterweg')
         db.session.add(passport)
         db.session.commit()
 
@@ -97,7 +99,7 @@ def test_flagged_passport_needs_override(app):
         passport = Passport(surname='John', name='Doe', pass_id=111, flags={
             'login': [datetime.date.today().isoformat()],
             'logout': [datetime.date.today().isoformat()]
-        })
+        }, phone='123', age=7, address='Musterweg')
         db.session.add(passport)
         db.session.commit()
 

@@ -4,6 +4,7 @@
 {{ form.pass_id() }}
 
 <div class="check row">
+    {% if form.check is defined %}
     <div class="col-xs-2">
         <label for="check">Ausweis <span class="pass_id">{{ pass_id }}</span>:</label>
     </div>
@@ -11,6 +12,7 @@
         {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}
         {{ field_errors(form.check) }}
     </div>
+    {% endif %}
 </div>
 
 <div class="surname row">
@@ -29,6 +31,15 @@
     <div class="col-xs-10">
         {{ form.name(class='form-control') }}
         {{ field_errors(form.name) }}
+    </div>
+</div>
+<div class="age row">
+    <div class="col-xs-2">
+        <label for="age">Alter:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.age(class='form-control') }}
+        {{ field_errors(form.age) }}
     </div>
 </div>
 

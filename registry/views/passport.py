@@ -146,7 +146,8 @@ def edit(pass_id):
     form = passport_form_factory(request.values, passport,
                                  current_app.config['FLAGS'],
                                  current_app.config['START_DATE'],
-                                 current_app.config['END_DATE'])
+                                 current_app.config['END_DATE'],
+                                 checked=False)
     status_code = 200
     if 'POST' == request.method:
         if form.validate_on_submit():
