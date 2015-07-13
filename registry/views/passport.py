@@ -153,7 +153,7 @@ def edit(pass_id):
         if form.validate_on_submit():
             form.populate_obj(passport)
             db.session.commit()
-            flash('Die Passdaten wurden aktualisert.')
+            flash('Die Passdaten wurden aktualisert.', 'success')
             return redirect(url_for('passport.passport', pass_id=pass_id))
         else:
             status_code = 406
