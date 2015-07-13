@@ -7,7 +7,7 @@ _BASE_DIR = Path(__file__).abspath().dirname().dirname()
 SECRET_KEY = '5m34a58x(3^$np08v!si#!a1btp$(h$a0qa-j_c)^!-ah=ypqs'
 
 # Database settings
-SQLALCHEMY_DATABASE_URI = 'postgresql://kinderstadt@localhost/registry'
+SQLALCHEMY_DATABASE_URI = 'postgresql://kinderstadt@localhost/registry?client_encoding=utf8'
 
 # Logging settings
 LOG_CONF = {
