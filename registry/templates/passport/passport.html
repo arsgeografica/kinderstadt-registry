@@ -26,13 +26,12 @@
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
             <p>Folgende Sperren müssen bestätigt werden:</p>
-            <div class="flags btn-group" data-toggle="buttons">
             {% for flag in form.flags %}
-                <label class="flag-{{ flag.id }} btn btn-primary" for="{{ flag.id }}">
-                    {{ flag }} {{ flag.label.text }}
-                </label>
-            {% endfor %}
+            <div class="checkbox checkbox-danger">
+                {{ flag }}
+                <label for="{{ flag.id }}">{{ flag.label.text }}</label>
             </div>
+            {% endfor %}
         </div>
     </div>
     {% endif %}
