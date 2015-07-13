@@ -2,6 +2,7 @@
 import pytest
 from flask import url_for
 from registry.models import Passport
+from registry.extensions import db
 
 
 @pytest.fixture
@@ -44,7 +45,8 @@ def test_passport_must_be_activated_first(app):
 def test_activation_can_only_be_called_once(app):
     client = app.test_client()
     with app.test_request_context():
-        Passport.create('John', 'Doe', 111)
+        db.session.add(Passport(surname='John', name='Doe', pass_id=111))
+        db.session.commit()
 
         r = client.get(url_for('passport.activate', pass_id=111))
 
@@ -54,7 +56,8 @@ def test_activation_can_only_be_called_once(app):
 def test_activated_passport_gets_transaction(app):
     client = app.test_client()
     with app.test_request_context():
-        Passport.create('John', 'Doe', 111)
+        db.session.add(Passport(surname='John', name='Doe', pass_id=111))
+        db.session.commit()
 
         post_url = url_for('passport.home')
         expected_url = url_for('passport.passport', pass_id=111,

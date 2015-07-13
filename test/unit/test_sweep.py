@@ -1,10 +1,13 @@
 from registry.models import Passport, Visit
+from registry.extensions import db
 
 
 def test_sweep_closes_visits(app):
     """Visits are ordered by check_in"""
     with app.test_request_context():
-        passport = Passport.create('John', 'Doe', 111)
+        passport = Passport(surname='John', name='Doe', pass_id=111)
+        db.session.add(passport)
+        db.session.commit()
         passport.check_in()
         passport.check_out()
 

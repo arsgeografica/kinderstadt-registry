@@ -32,26 +32,6 @@ class Passport(db.Model):
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')
 
-    @classmethod
-    def create(cls, surname, name, pass_id, flags=None):
-        """Factory method to save a passport to the database.
-
-        :param surname: Surname to store
-        :param name: Name to store
-        :param pass_id: Pass ID to store
-        :returns: Passport object
-        """
-        p = cls()
-        p.surname = surname
-        p.name = name
-        p.pass_id = pass_id
-        p.flags = flags
-
-        db.session.add(p)
-        db.session.commit()
-
-        return p
-
     @property
     def is_active(self):
         """Property indicating whether the passport has any visits at all"""
