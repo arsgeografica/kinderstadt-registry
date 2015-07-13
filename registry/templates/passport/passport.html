@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    {% if form.flags %}
+    {% if form.flags._unbound_fields|length %}
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
             <p>Folgende Sperren müssen bestätigt werden:</p>
