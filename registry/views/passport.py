@@ -99,7 +99,7 @@ def passport(pass_id):
                 passport.check_in()
                 logger.debug('Checked in pass id %d', passport.pass_id)
                 checked_in = True
-                flash(CHECKIN_MESSAGE % pass_id, 'checkin')
+                flash(CHECKIN_MESSAGE % pass_id, 'success')
             elif request.form.get('checkout') is not None:
                 if not passport.checked_in:
                     return redirect(url_for('passport.confirm_transaction',
@@ -108,7 +108,7 @@ def passport(pass_id):
                 passport.check_out()
                 logger.debug('Checked out pass id %d', passport.pass_id)
                 checked_out = True
-                flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
+                flash(CHECKOUT_MESSAGE % pass_id, 'success')
             assert checked_in or checked_out
             return redirect(url_for('passport.home'))
         status_code = 406
@@ -129,10 +129,10 @@ def confirm_transaction(pass_id, action):
     if request.method == 'POST' and form.validate_on_submit():
         if action == 'checkin':
             passport.check_in()
-            flash(CHECKIN_MESSAGE % pass_id, 'checkout')
+            flash(CHECKIN_MESSAGE % pass_id, 'success')
         else:
             passport.check_out()
-            flash(CHECKOUT_MESSAGE % pass_id, 'checkout')
+            flash(CHECKOUT_MESSAGE % pass_id, 'success')
         return redirect(url_for('passport.home'))
     return render_template('passport/confirm_transaction.html', form=form,
                            passport=passport)
