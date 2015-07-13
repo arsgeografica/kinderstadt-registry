@@ -3,24 +3,28 @@
 {{ form.csrf_token() }}
 {{ form.pass_id() }}
 
+{% if form.check is defined %}
 <div class="check row">
-    {% if form.check is defined %}
     <div class="col-xs-2">
         <label for="check">Ausweis <span class="pass_id">{{ pass_id }}</span>:</label>
     </div>
     <div class="value col-xs-10">
-        {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}
+        <div class="form-group has-feedback">
+            {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
         {{ field_errors(form.check) }}
     </div>
-    {% endif %}
 </div>
+{% endif %}
 
 <div class="surname row">
     <div class="col-xs-2">
         <label for="surname">Vorname:</label>
     </div>
     <div class="value col-xs-10">
-        {{ form.surname(class='form-control') }}
+        <div class="form-group has-feedback">
+            {{ form.surname(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
         {{ field_errors(form.surname) }}
     </div>
 </div>
@@ -29,7 +33,9 @@
         <label for="name">Name:</label>
     </div>
     <div class="col-xs-10">
-        {{ form.name(class='form-control') }}
+        <div class="form-group has-feedback">
+            {{ form.name(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
         {{ field_errors(form.name) }}
     </div>
 </div>
@@ -38,7 +44,9 @@
         <label for="age">Alter:</label>
     </div>
     <div class="col-xs-10">
-        {{ form.age(class='form-control') }}
+        <div class="form-group has-feedback">
+            {{ form.age(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
         {{ field_errors(form.age) }}
     </div>
 </div>
@@ -58,7 +66,9 @@
         <label for="phone">Telefon:</label>
     </div>
     <div class="col-xs-10">
-        {{ form.phone(class='form-control') }}
+        <div class="form-group has-feedback">
+            {{ form.phone(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
         {{ field_errors(form.phone) }}
     </div>
 </div>

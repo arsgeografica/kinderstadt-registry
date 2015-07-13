@@ -17,7 +17,9 @@
             <label for="check">Pass #{{ passport.pass_id }}</label>
         </div>
         <div class="col-xs-10">
-            {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}
+            <div class="form-group has-feedback">
+                {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+            </div>
             {{ field_errors(form.check) }}
         </div>
     </div>
