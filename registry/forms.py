@@ -50,6 +50,8 @@ class PassportForm(Form):
     email = StringField()
     notes = TextAreaField()
     age = IntegerField(validators=[DataRequired(), NumberRange(min=0)])
+    infos_wanted = BooleanField()
+    photos_allowed = BooleanField()
 
 
 class CheckedPassportForm(PassportForm):

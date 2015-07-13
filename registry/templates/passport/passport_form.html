@@ -73,6 +73,32 @@
     </div>
 </div>
 
+<div class="infos_wanted row">
+    <div class="col-xs-2">
+        <label for="infos_wanted">Infos erwünscht:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="checkbox">
+        {{ form.infos_wanted() }}
+        <label for="infos_wanted"></label>
+        </div>
+        {{ field_errors(form.infos_wanted) }}
+    </div>
+</div>
+
+<div class="photos_allowed row">
+    <div class="col-xs-2">
+        <label for="photos_allowed">Fotos erlaubt:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="checkbox">
+        {{ form.photos_allowed() }}
+        <label for="photos_allowed"></label>
+        </div>
+        {{ field_errors(form.photos_allowed) }}
+    </div>
+</div>
+
 <div class="notes row">
     <div class="col-xs-2">
         <label for="notes">Bemerkungen:</label>

@@ -14,7 +14,9 @@ def user(request):
         'name': 'Bär',
         'age': 12,
         'phone': '0123456789',
-        'address': 'Musterweg 1\nMusterstadt'
+        'address': 'Musterweg 1\nMusterstadt',
+        'infos_wanted': True,
+        'photos_allowed': True,
     }
 
 
@@ -26,7 +28,9 @@ PASS_REQUIREMENTS = {
     'name': True,
     'age': True,
     'phone': True,
-    'address': False
+    'address': False,
+    'infos_wanted': False,
+    'photos_allowed': False,
 }
 
 

@@ -29,6 +29,8 @@ class Passport(db.Model):
     email = Column(String(length=128))
     notes = Column(Text())
     flags = Column(MutableDict.as_mutable(JSONB))
+    infos_wanted = Column(Boolean, default=False)
+    photos_allowed = Column(Boolean, default=False)
 
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')
