@@ -35,6 +35,7 @@ setup(
     install_requires=[
         'alembic==0.7.6',
         'click==4.0',
+        'fake-factory==0.5.2',
         'Flask-Migrate==1.4.0',
         'Flask-SQLAlchemy==2.0',
         'Flask-WTF==0.11',

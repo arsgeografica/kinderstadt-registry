@@ -1,5 +1,9 @@
+from random import randint
 import click
+from faker import Factory as FakerFactory
 from registry.app import factory
+from registry import extensions
+from registry.models import Passport
 from flask.ext import migrate as migrate_extension
 from pgcli.main import PGCli
 
@@ -24,6 +28,32 @@ def server(ctx):
     """
     app = factory(ctx.obj['CONFIG'])
     app.run(debug=ctx.obj['DEBUG'])
+
+
+@cli.command()
+@click.pass_context
+@click.option('--truncate', is_flag=True, default=False, help="Empty DB first")
+def fake(ctx, truncate, num_passes=700):
+    """
+    Generate fake data
+    """
+    app = factory(ctx.obj['CONFIG'])
+    db = extensions.db
+    with app.app_context():
+        faker = FakerFactory.create('de_DE')
+        if truncate:
+            Passport.query.delete()
+            db.session.commit()
+        for i in range(num_passes):
+            passport = Passport(
+                pass_id=i+1,
+                surname=faker.first_name(),
+                name=faker.last_name(),
+                age=randint(7, 14),
+                phone=faker.phone_number()
+            )
+            db.session.add(passport)
+        db.session.commit()
 
 
 @cli.group()
