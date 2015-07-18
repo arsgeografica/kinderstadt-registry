@@ -58,6 +58,10 @@ def factory(config=None):
                      'passport.home',
                      passport.home,
                      methods=['GET', 'POST'])
+    app.add_url_rule('/passport/query',
+                     'passport.query',
+                     passport.query,
+                     methods=['POST'])
     app.add_url_rule('/passport/current',
                      'passport.current',
                      passport.current)

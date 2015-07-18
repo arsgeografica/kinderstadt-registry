@@ -43,6 +43,8 @@ setup(
         'path.py==7.3',
         'pgcli==0.17.0',
         'python-stdnum==1.1',
+        'SQLAlchemy-Searchable==0.9.3',
+        'SQLAlchemy-Utils==0.30.12',
     ],
     extras_require={
         'devel': [

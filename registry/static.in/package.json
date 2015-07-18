@@ -8,6 +8,7 @@
     "jquery": "^2.1.4",
     "lodash": "^3.8.0",
     "open-sans-fontface": "^1.4.0",
+    "selectize": "^0.12.1",
     "typopro": "^2.4.1"
   },
   "devDependencies": {
