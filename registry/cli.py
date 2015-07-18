@@ -1,9 +1,10 @@
-from random import randint
+from datetime import datetime, time, timedelta
+import random
 import click
 from faker import Factory as FakerFactory
 from registry.app import factory
 from registry import extensions
-from registry.models import Passport
+from registry.models import Passport, Visit
 from flask.ext import migrate as migrate_extension
 from pgcli.main import PGCli
 
@@ -39,9 +40,13 @@ def fake(ctx, truncate, num_passes=700):
     """
     app = factory(ctx.obj['CONFIG'])
     db = extensions.db
+
+    num_days = (app.config['END_DATE'] - app.config['START_DATE']).days + 1
+
     with app.app_context():
         faker = FakerFactory.create('de_DE')
         if truncate:
+            Visit.query.delete()
             Passport.query.delete()
             db.session.commit()
         for i in range(num_passes):
@@ -49,10 +54,35 @@ def fake(ctx, truncate, num_passes=700):
                 pass_id=i+1,
                 surname=faker.first_name(),
                 name=faker.last_name(),
-                age=randint(7, 14),
+                age=random.randint(7, 14),
                 phone=faker.phone_number()
             )
             db.session.add(passport)
+
+            def gen_visit(passport, day, start, stop):
+                a_hour = min(max(start, random.gauss(start + 2, 2)), stop)
+                a = datetime.combine(app.config['START_DATE'], time()) \
+                    + timedelta(days=day, hours=a_hour)
+                b_hour = min(max(start, random.gauss(stop - 2, 2)), stop)
+                b = datetime.combine(app.config['START_DATE'], time()) \
+                    + timedelta(days=day, hours=b_hour)
+
+                if a > b:
+                    a, b = b, a
+                visit = Visit(passport=passport, check_in=a, check_out=b)
+                db.session.add(visit)
+
+            # decide on first day
+            first_day = int(min(max(0, random.gauss(2, 3)), num_days))
+            # for each day, decide on one or two visits
+            for day in range(first_day, num_days):
+                if random.choice([False, True]) is True:
+                    # if one, decide on entry and exit
+                    gen_visit(passport, day, 9, 17)
+                else:
+                    # if two, decide on entry and exit for A and B
+                    gen_visit(passport, day, 9, 12)
+                    gen_visit(passport, day, 13, 17)
         db.session.commit()
 
 
