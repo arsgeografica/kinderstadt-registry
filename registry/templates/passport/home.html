@@ -10,7 +10,7 @@
 
     <form method="post">
         {{ form.csrf_token() }}
-        <div class="pass_id input-group">
+        <div class="pass-id input-group">
             {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID', class="form-control") }}
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">Los!</button>
@@ -25,4 +25,8 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='search.js') }}"></script>
 {% endblock %}

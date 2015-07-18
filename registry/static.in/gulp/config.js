@@ -25,6 +25,8 @@ module.exports = {
     code: {
         bundles: [{
             entries: 'registry.js',
+        }, {
+            entries: 'search.js'
         }],
         srcBase: src,
         dst: dst,

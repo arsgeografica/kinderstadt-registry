@@ -3,6 +3,7 @@
 @import 'bootstrap-em';
 @import 'bootstrap-checkboxes';
 @import 'font-awesome/less/font-awesome';
+@import 'selectize/dist/less/selectize.bootstrap3';
 
 // Then some variable definitions
 @brand-primary: #d22027;
@@ -46,6 +47,31 @@ form .alert-danger {
 
 form .has-feedback .form-control-feedback {
     padding: 0.5em;
+}
+
+// Selectize styles
+.selectize-input {
+    vertical-align:top;
+}
+
+.input-group .form-control:last-child .selectize-input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.selectize-control.multi .selectize-input > div.item {
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.selectize-dropdown-content {
+    font-size: 1.5em;
+
+    .pass-id {
+        display: inline-block;
+        width: 4em;
+    }
 }
 
 // Styles for home view

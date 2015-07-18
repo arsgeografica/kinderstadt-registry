@@ -43,7 +43,8 @@
     {% block body %}{% endblock %}
 
     <div class="registry-version">registry {{ __version__ }}</div>
-    {% block script %}{% endblock %}
+    {% block script %}
     <script src="{{ url_for('static', filename='registry.js') }}"></script>
+    {% endblock %}
 </body>
 </html>
