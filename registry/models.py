@@ -1,4 +1,5 @@
 import logging
+from flask.ext.sqlalchemy import BaseQuery
 from sqlalchemy import ForeignKey
 from sqlalchemy.sql import desc, text
 from sqlalchemy.sql.expression import func
@@ -8,9 +9,15 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.schema import Column
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Text
+from sqlalchemy_utils.types import TSVectorType
+from sqlalchemy_searchable import SearchQueryMixin
 from registry.extensions import db
 from datetime import datetime
 from uuid import uuid4
+
+
+class PassportQuery(BaseQuery, SearchQueryMixin):
+    pass
 
 
 class Passport(db.Model):
@@ -18,6 +25,7 @@ class Passport(db.Model):
     """DB representation of a single passport."""
 
     __tablename__ = 'passport'
+    query_class = PassportQuery
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     pass_id = Column(Integer, nullable=False, unique=True)
@@ -31,6 +39,8 @@ class Passport(db.Model):
     flags = Column(MutableDict.as_mutable(JSONB))
     infos_wanted = Column(Boolean, default=False)
     photos_allowed = Column(Boolean, default=False)
+    lexemes = Column(TSVectorType('surname', 'name', regconfig='german'),
+                     nullable=False)
 
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')

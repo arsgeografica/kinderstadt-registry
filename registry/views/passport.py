@@ -2,8 +2,8 @@
 
 import datetime
 from logging import getLogger
-from flask import abort, current_app, flash, redirect, render_template, \
-                  request, url_for
+from flask import abort, current_app, flash, jsonify, redirect, \
+                  render_template, request, url_for
 from registry.extensions import db
 from registry.forms import ConfirmForm, QuickSelectForm, SweepForm
 from registry.forms import check, passport_form_factory, \
@@ -27,6 +27,24 @@ def home():
 
     return render_template('passport/home.html', form=form,
                            active_passes=Passport.active_passes())
+
+
+def query():
+    if request.json is None:
+        abort(400)
+
+    query = request.json.get('query', None)
+    if query is None:
+        abort(400)
+
+    passports = Passport.query.search(query) \
+        .order_by(Passport.surname, Passport.name) \
+        .limit(10).all()
+    return jsonify(data=[{
+        'pass_id': p.pass_id,
+        'full_name': '%s %s' % (p.surname, p.name),
+        'checked_in': p.checked_in
+    } for p in passports])
 
 
 def current():
