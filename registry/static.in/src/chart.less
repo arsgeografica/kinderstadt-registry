@@ -1,0 +1,33 @@
+@import 'registry';
+
+.chart {
+    svg {
+        .axis path, .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
+
+        .line {
+            fill: none;
+            stroke: @brand-primary;
+            stroke-width: 2px;
+        }
+
+        .overlay {
+            fill: none;
+            pointer-events: all;
+        }
+
+        .focus {
+            circle {
+                fill: @brand-primary;
+                stroke: darken(@brand-primary, 20%);
+            }
+        }
+    }
+}

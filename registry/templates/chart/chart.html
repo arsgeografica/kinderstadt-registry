@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% set title = 'Tagesstatistik' %}
+
+{% block body %}
+<h1>Tagesstatistik</h1>
+{% for day, bins in bins|dictsort %}
+<div class="chart day-{{ day }}" data-day="{{ day }}">
+    <h2>{{ day }}</h2>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block script %}
+<script>
+var CONFIG = {
+    bins: {{ bins|tojson|safe }},
+    start_time: '{{ start_time }}',
+    end_time: '{{ end_time }}',
+    max_in: {{ max_in }},
+    max_out: {{ max_out }}
+};
+</script>
+<script src="{{ url_for('static', filename='chart.js') }}"></script>
+{% endblock %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='chart.css') }}" rel="stylesheet">
+{% endblock %}

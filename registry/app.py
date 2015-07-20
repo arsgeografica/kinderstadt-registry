@@ -7,7 +7,7 @@ from registry.extensions import db, migrate
 from registry import __version__
 from registry import models
 from registry import views
-from registry.views import passport
+from registry.views import chart, passport
 
 
 def check_flags(app):
@@ -85,4 +85,8 @@ def factory(config=None):
                      'passport.edit',
                      passport.edit,
                      methods=['GET', 'POST'])
+    app.add_url_rule('/chart/',
+                     'chart.chart',
+                     chart.chart)
+
     return app

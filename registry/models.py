@@ -1,4 +1,5 @@
 import logging
+from flask import current_app
 from flask.ext.sqlalchemy import BaseQuery
 from sqlalchemy import ForeignKey
 from sqlalchemy.sql import desc, text
@@ -150,3 +151,38 @@ class Visit(db.Model):
             .update({Visit.sweeped: True, Visit.check_out: datetime.now()})
         db.session.flush()
         db.session.commit()
+
+    @classmethod
+    def binned(cls, bin_size=None):
+        if not bin_size:
+            bin_size = current_app.config['CHART_BIN_SIZE']
+
+        sql = """
+        WITH checks AS (
+            SELECT
+                True AS is_check_in,
+                ts_round(check_in, %(bin_size)s) AS ts
+            FROM
+                visit
+            WHERE
+                check_in IS NOT NULL
+            UNION ALL
+            SELECT
+                False AS is_check_in,
+                ts_round(check_out + interval '%(bin_size)s seconds', %(bin_size)s) AS ts
+            FROM
+                visit
+            WHERE
+                check_out IS NOT NULL
+        )
+        SELECT
+            ts,
+            is_check_in,
+            count(*)
+        FROM
+            checks
+        GROUP BY is_check_in, ts
+        ORDER BY ts ASC
+        """
+        result = db.engine.execute(sql, bin_size=bin_size)
+        return result.fetchall()

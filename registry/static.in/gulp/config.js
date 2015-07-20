@@ -26,7 +26,9 @@ module.exports = {
         bundles: [{
             entries: 'registry.js',
         }, {
-            entries: 'search.js'
+            entries: 'search.js',
+        }, {
+            entries: 'chart.js',
         }],
         srcBase: src,
         dst: dst,
@@ -47,6 +49,7 @@ module.exports = {
     styles: {
         src: [
             src + '/registry.less',
+            src + '/chart.less',
         ],
         srcBase: src,
         dst: dst,

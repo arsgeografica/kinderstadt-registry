@@ -8,10 +8,23 @@ Create Date: 2015-06-14 21:36:29.185951
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
+from sqlalchemy.schema import DDL
 
 # revision identifiers, used by Alembic.
 revision = '503ad9403152'
 down_revision = None
+
+
+ts_round_create = DDL("""
+CREATE OR REPLACE FUNCTION ts_round(timestamptz, INT4)
+RETURNS TIMESTAMPTZ AS $$
+SELECT 'epoch'::timestamptz + '1 second'::INTERVAL * ($2 * (extract(epoch FROM $1)::INT4 / $2));
+$$ LANGUAGE SQL;
+""")
+
+ts_round_drop =DDL("""
+DROP FUNCTION ts_round(timestamptz, INT4);
+""")
 
 
 def upgrade():
@@ -42,6 +55,8 @@ def upgrade():
     op.create_index(op.f('ix_visit_passport_id'), 'visit', ['passport_id'],
                     unique=False)
 
+    op.execute(ts_round_create)
+
 
 def downgrade():
     op.drop_index(op.f('ix_visit_passport_id'), table_name='visit')
@@ -49,3 +64,4 @@ def downgrade():
     op.drop_index(op.f('ix_visit_check_in'), table_name='visit')
     op.drop_table('visit')
     op.drop_table('passport')
+    op.execute(ts_round_drop)

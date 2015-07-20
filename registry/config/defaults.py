@@ -58,3 +58,7 @@ FLAGS = {
 
 START_DATE = datetime.date.today() - datetime.timedelta(days=3)
 END_DATE = datetime.date.today() + datetime.timedelta(days=3)
+START_TIME = datetime.time(9)
+END_TIME = datetime.time(17)
+
+CHART_BIN_SIZE = 15*60  # in seconds
