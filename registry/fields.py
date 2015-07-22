@@ -26,3 +26,18 @@ class FlagField(MultiCheckboxField):
 
     def populate_obj(self, obj, name):
         obj[name] = self.data
+
+
+class MultiPassportField(MultiCheckboxField):
+    def __init__(self, passports, *args, **kwargs):
+        self.passports = passports
+
+        kwargs['choices'] = [(passport.pass_id,
+                              '%(pass_id)d - %(surname)s %(name)s' % passport.__dict__)
+                             for passport in passports]
+
+        return super(MultiPassportField, self).__init__(*args, **kwargs)
+
+    def process_formdata(self, valuelist):
+        if valuelist:
+            self.data = [int(pass_id) for pass_id in valuelist]

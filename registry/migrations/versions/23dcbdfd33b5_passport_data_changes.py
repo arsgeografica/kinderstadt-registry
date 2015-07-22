@@ -16,11 +16,7 @@ down_revision = '8a00d265ee2'
 
 def upgrade():
     op.add_column('passport', sa.Column('age', sa.Integer(), nullable=False))
-    op.alter_column('passport', 'address', existing_type=sa.TEXT(),
-                    nullable=True)
 
 
 def downgrade():
-    op.alter_column('passport', 'address', existing_type=sa.TEXT(),
-                    nullable=False)
     op.drop_column('passport', 'age')

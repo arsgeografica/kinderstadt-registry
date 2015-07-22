@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% set title = 'Gruppen-Startseite' %}
+
+{% block body %}
+<ul>
+    {% for group in groups %}
+    <li>
+        <a href="{{ url_for('group.edit', group_id=group.id) }}">{{ group.name }} ({{ group.passports|count }})</a>
+        <a href="{{ url_for('group.check_in', group_id=group.id) }}">Check-In</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

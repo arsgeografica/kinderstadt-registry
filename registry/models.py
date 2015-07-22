@@ -42,6 +42,7 @@ class Passport(db.Model):
     photos_allowed = Column(Boolean, default=False)
     lexemes = Column(TSVectorType('surname', 'name', regconfig='german'),
                      nullable=False)
+    group_id = Column(UUID(as_uuid=True), ForeignKey('group.id'))
 
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')
@@ -55,7 +56,7 @@ class Passport(db.Model):
     def checked_in(self):
         return len(self.visits) > 0 and not self.visits[0].check_out
 
-    def check_in(self, when=None):
+    def check_in(self, when=None, commit=True):
         """Check in passport, creating a new visit
 
         :param when: timestamp to use for checkin, defaults to datetime.now()
@@ -65,11 +66,12 @@ class Passport(db.Model):
         visit.check_in = when if when else datetime.now()
 
         db.session.add(visit)
-        db.session.commit()
+        if commit:
+            db.session.commit()
 
         return visit
 
-    def check_out(self, when=None):
+    def check_out(self, when=None, commit=True):
         """Check out passport.
 
         This either closes the last visit or creates a new visit with only
@@ -85,7 +87,8 @@ class Passport(db.Model):
 
         current_visit.check_out = when if when else datetime.now()
 
-        db.session.commit()
+        if commit:
+            db.session.commit()
 
         return current_visit
 
@@ -115,6 +118,9 @@ class Passport(db.Model):
         open_passports = db.session.query(Passport).join(open_visits)
 
         return open_passports
+
+    def __repr__(self):
+        return u'<Passport (%r)>' % self.pass_id
 
 
 class Visit(db.Model):
@@ -186,3 +192,19 @@ class Visit(db.Model):
         """
         result = db.engine.execute(sql, bin_size=bin_size)
         return result.fetchall()
+
+
+class Group(db.Model):
+    __tablename__ = 'group'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    name = Column(String(length=128), nullable=False, unique=True)
+    flags = Column(JSONB)
+    passports = relationship(Passport, backref='group')
+
+
+def commit_model(cls, *args, **kwargs):
+    model = cls(*args, **kwargs)
+    db.session.add(model)
+    db.session.commit()
+    return model

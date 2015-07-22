@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% from "macros.html" import field_row, field_errors %}
+
+
+{% if action == 'check_in' %}
+    {% set title = 'Gruppen-Checkin' %}
+{% else %}
+    {% set title = 'Gruppen-Checkout' %}
+{% endif %}
+
+{% block body %}
+<form method="post">
+    {{ form.csrf_token() }}
+
+    {% for passport in form.passports %}
+    <div class="passports passport_{{ passport.key }} row">
+        <div class="col-xs-2">
+            {{ passport.label }}:
+        </div>
+        <div class="value col-xs-10">
+            {{ passport }}
+            {{ field_errors(passport) }}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="actions row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <div class="btn-group">
+                <button class="btn btn-primary btn-lg">Speichern</button>
+                <a class="btn btn-default btn-lg" href="{{ url_for('group.index') }}">Abbrechen</a>
+            </div>
+        </div>
+    </div>
+</from>
+{% endblock %}
