@@ -55,13 +55,11 @@ def test_chart_calculates_right_amount(app):
         bins = Visit.binned(bin_size=5*60)
         chart = {}
         for bin in bins:
-            print(bin)
             ts = bin.ts.isoformat()
             if ts not in chart:
                 chart[ts] = {'checkin': 0, 'checkout': 0}
             mode = 'checkin' if bin.is_check_in else 'checkout'
             chart[ts][mode] = bin.count
-        print(chart)
         # From 0 to 5: 3 in, 0 out
         assert chart[cp0]['checkin'] == 3
         assert chart[cp0]['checkout'] == 0
