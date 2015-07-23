@@ -18,7 +18,7 @@ CHECKOUT_MESSAGE = 'Pass %d wurde ausgecheckt.'
 def home():
     form = QuickSelectForm(request.form)
     if 'POST' == request.method:
-        if form.validate_on_submit():
+        if form.validate():
             pass_id = form.pass_id.data
             if Passport.get(pass_id):
                 return redirect(url_for('passport.passport', pass_id=pass_id))
@@ -77,7 +77,7 @@ def activate(pass_id):
 
     status_code = 200
     if 'POST' == request.method:
-        if form.validate_on_submit():
+        if form.validate():
             passport = Passport()
             passport.flags = {}
             form.populate_obj(passport)
@@ -107,7 +107,7 @@ def passport(pass_id):
     form = transaction_form_factory(request.values, passport, flags)
     status_code = 200
     if 'POST' == request.method:
-        if form.validate_on_submit():
+        if form.validate():
             logger = getLogger(__name__)
             checked_in = checked_out = False
             if request.form.get('checkin') is not None:
@@ -144,7 +144,7 @@ def confirm_transaction(pass_id, action):
 
     form = ConfirmForm(obj=Passport(pass_id=pass_id),
                        data=dict(check=check(pass_id)))
-    if request.method == 'POST' and form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
         if action == 'checkin':
             passport.check_in()
             flash(CHECKIN_MESSAGE % pass_id, 'success')
@@ -168,7 +168,7 @@ def edit(pass_id):
                                  checked=False)
     status_code = 200
     if 'POST' == request.method:
-        if form.validate_on_submit():
+        if form.validate():
             form.populate_obj(passport)
             db.session.commit()
             flash('Die Passdaten wurden aktualisert.', 'success')
