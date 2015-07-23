@@ -16,7 +16,7 @@ down_revision = '3ac4d0af1d85'
 
 def upgrade():
     op.add_column(
-        'passport', sa.Column('address', sa.Text(), nullable=False))
+        'passport', sa.Column('address', sa.Text(), nullable=True))
     op.add_column(
         'passport', sa.Column('email', sa.String(length=128), nullable=True))
     op.add_column(

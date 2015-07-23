@@ -5,7 +5,8 @@ from wtforms.fields import FormField
 from wtforms.form import Form as WTForm
 from wtforms import BooleanField, HiddenField, IntegerField, StringField, \
     TextAreaField
-from wtforms.validators import DataRequired, NumberRange, ValidationError
+from wtforms.validators import DataRequired, Length, NumberRange, \
+    ValidationError
 from stdnum import luhn
 from registry.fields import FlagField
 
@@ -104,3 +105,15 @@ class ConfirmForm(Form):
 
 class SweepForm(Form):
     pass
+
+
+class GroupForm(Form):
+    name = StringField(validators=[
+        DataRequired(),
+        Length(min=5, message='Der Gruppenname muss mindestens %(min)d ' +
+               'Zeichen lang sein')])
+    passport_ids = StringField()
+
+    def validate_passport_ids(form, field):
+        # raise ValidationError(u'Ungültige Check-ID')
+        pass

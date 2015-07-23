@@ -26,8 +26,6 @@ def chart():
         ts_d = ts_d.isoformat()
         ts_t = ts_t.isoformat()
 
-        print(_bin)
-
         if ts_d not in bins:
             bins[ts_d] = {}
         if ts_t not in bins[ts_d]:

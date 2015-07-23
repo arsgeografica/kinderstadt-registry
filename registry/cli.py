@@ -111,7 +111,6 @@ def init(ctx):
     """Init migrations system"""
     app = factory(ctx.obj['CONFIG'])
     with app.app_context():
-        print(app.extensions['migrate'].directory)
         migrate_extension.init()
 
 

@@ -7,7 +7,7 @@ from registry.extensions import db, migrate
 from registry import __version__
 from registry import models
 from registry import views
-from registry.views import chart, passport
+from registry.views import chart, group, passport
 
 
 def check_flags(app):
@@ -88,5 +88,24 @@ def factory(config=None):
     app.add_url_rule('/chart/',
                      'chart.chart',
                      chart.chart)
+    app.add_url_rule('/group',
+                     'group.index',
+                     group.index)
+    app.add_url_rule('/group/new',
+                     'group.new',
+                     group.edit,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/group/edit/<group_id>',
+                     'group.edit',
+                     group.edit,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/group/<group_id>/check_in',
+                     'group.check_in',
+                     group.check_in,
+                     methods=['GET', 'POST'])
+    app.add_url_rule('/group/<group_id>/check_out',
+                     'group.check_out',
+                     group.check_out,
+                     methods=['GET', 'POST'])
 
     return app
