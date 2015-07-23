@@ -1,0 +1,39 @@
+{
+  "name": "static.in",
+  "version": "0.0.0",
+  "description": "",
+  "dependencies": {
+    "bootstrap": "^3.3.4",
+    "d3": "^3.5.6",
+    "font-awesome": "^4.3.0",
+    "jquery": "^2.1.4",
+    "lodash": "^3.8.0",
+    "open-sans-fontface": "^1.4.0",
+    "selectize": "^0.12.1",
+    "typopro": "^2.4.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.2.3",
+    "browserify": "^9.0.3",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-htmlmin": "^1.1.1",
+    "gulp-jshint": "^1.9.4",
+    "gulp-less": "^3.0.1",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-plumber": "^0.6.6",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
+    "jshint-stylish": "^1.0.1",
+    "lodash": "^3.10.0",
+    "moment": "^2.10.3",
+    "pretty-hrtime": "^1.0.0",
+    "require-dir": "^0.1.0",
+    "run-sequence": "^1.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^2.4.0"
+  }
+}

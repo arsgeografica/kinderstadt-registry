@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Aktuell eingecheckte Pässe</h1>
+<ul class="active-passes">
+{% for pass in passes %}
+    <li>
+        <a href="{{ url_for('passport.passport', pass_id=pass.pass_id) }}">
+            <span>{{ pass.pass_id }}</span> seit
+            <span>{{ pass.visits[0].check_in.strftime('%H:%M') }}</span>
+        </a>
+    </li>
+{% endfor %}
+</ul>
+
+<a class="btn btn-primary btn-lg" href="{{ url_for('passport.sweep') }}">Alle auschecken</a>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}

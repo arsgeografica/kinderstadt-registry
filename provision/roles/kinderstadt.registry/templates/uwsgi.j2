@@ -1,0 +1,20 @@
+[uwsgi]
+chdir = {{ passgen_install_dir }}
+virtualenv = {{ passgen_virtualenv_dir }}
+pythonpath = {{ passgen_install_dir }}/code
+wsgi = passgen.wsgi
+
+uid = {{ passgen_user }}
+gid = {{ passgen_group }}
+
+env = PASSGEN_CONFIG_MODULE=passgen.config.production
+
+socket = {{ passgen_socket_file }}
+chown-socket = {{ passgen_user }}:{{ passgen_group }}
+chmod-socket = 660
+
+processes = {{ passgen_processes }}
+threads = {{ passgen_threads }}
+
+logto = {{ passgen_log_dir }}/uwsgi.log
+logto2 = {{ passgen_log_dir }}/uwsgi.log2

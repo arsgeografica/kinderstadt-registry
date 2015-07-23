@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% set title = 'Pass-Startseite' %}
+
+{% block body %}
+<div class="jumbotron">
+    <div class="page-header">
+        <h1>Pass-Startseite <small>Gib eine Pass-ID ein.</small></h1>
+    </div>
+
+    <form method="post">
+        {{ form.csrf_token() }}
+        <div class="pass-id input-group">
+            {{ form.pass_id(autofocus=True, autocomplete='off', placeholder='Pass-ID', class="form-control") }}
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">Los!</button>
+            </span>
+        </div>
+    </form>
+    <div class="passport-helper">
+        <img src="{{ url_for('static', filename='assets/passport.png') }}"/>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='search.js') }}"></script>
+{% endblock %}

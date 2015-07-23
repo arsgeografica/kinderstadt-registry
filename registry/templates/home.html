@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% set title = 'Startseite' %}
+
+{% block body %}
+<div class="row routes">
+    <div class="col-xs-12 col-md-4">
+        <a href="{{ url_for('passport.home') }}" class="btn btn-primary">Pässe</a>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <a href="{{ url_for('group.index') }}" class="btn btn-primary">Gruppen</a>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <a href="{{ url_for('chart.chart') }}" class="btn btn-primary">Statistiken</a>
+    </div>
+</div>
+{% endblock %}

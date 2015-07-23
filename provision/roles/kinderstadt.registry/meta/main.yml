@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Christian Wygoda
+  description: Set up registry service
+  license: GPL v3
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+    - app

@@ -1,0 +1,3 @@
+<div class="btn-group" data-toggle="buttons" {{ params|safe }}>
+{% for subfield in field %}{{ subfield()|safe }}{% endfor %}
+</div>

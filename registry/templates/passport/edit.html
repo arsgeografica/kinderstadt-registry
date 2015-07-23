@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% set title = 'Pass-Daten' %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Pass-Daten <small>Hier kannst Du die Passdaten aktualisieren.</small></h1>
+</div>
+
+<form method="post">
+    {% include 'passport/passport_form.html' %}
+    <div class="actions row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <div class="btn-group">
+                <button class="btn btn-primary btn-lg">Aktualisieren</button>
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.passport', pass_id=pass_id) }}">Abbrechen</a>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}

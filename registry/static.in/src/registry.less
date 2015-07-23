@@ -1,0 +1,144 @@
+// First some includes
+@import 'bootstrap/less/bootstrap';
+@import 'bootstrap-em';
+@import 'bootstrap-checkboxes';
+@import 'font-awesome/less/font-awesome';
+@import 'selectize/dist/less/selectize.bootstrap3';
+
+// Then some variable definitions
+@brand-primary: #d22027;
+@fa-font-path: 'fonts';
+@font-size-root: 15px;
+
+// General styles
+.registry-version {
+    color: #888;
+    font-size: 0.75em;
+    text-align: center;
+}
+
+.navbar-brand img {
+    width: 15rem;
+    margin-top: -1em;
+}
+
+form {
+    .row {
+        margin-bottom: 1em;
+    }
+}
+
+form .alert-danger {
+    li {
+        margin-left: 1em;
+    }
+}
+
+.active-counter {
+    .badge {
+        background: @brand-primary;
+    }
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+}
+
+form .has-feedback .form-control-feedback {
+    padding: 0.5em;
+}
+
+// Selectize styles
+.selectize-input {
+    vertical-align:top;
+}
+
+.input-group .form-control:last-child .selectize-input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.selectize-control.multi .selectize-input > div.item {
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.selectize-dropdown-content {
+    font-size: 1.5em;
+
+    .pass-id {
+        display: inline-block;
+        width: 4em;
+    }
+}
+
+// Styles for home view
+.routes {
+    text-align: center;
+    .btn {
+        @font-size: 4em;
+        @size: 6em;
+        display: inline-block;
+        width: @size;
+        height: @size;
+        line-height: @size;
+        font-size: @font-size;
+    }
+}
+
+// Styles for passport.home view
+.passport-helper {
+    margin: 1em 0;
+
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+// Styles for passport.passport view
+.visits {
+    margin-top: 2em;
+    padding-top: 2em;
+    border-top: 1px solid @gray-lighter;
+    list-style-type: none;
+
+    .checkin, .checkout {
+        display: inline-block;
+        width: 8em;
+        text-align: center;
+        padding: 1em;
+        margin-bottom: 0.5em;
+    }
+}
+
+// Styles for group.index view
+.groups {
+    .group {
+        text-align: center;
+       .btn {
+            @font-size: 1.5em;
+            @size: 7em;
+            display: block;
+            width: @size;
+            height: @size;
+            line-height: @size;
+            font-size: @font-size;
+        }
+    }
+}
+
+.group-transaction {
+    .passes > label {
+        @font-size: 1.2em;
+        @size: 6em;
+        display: inline-block;
+        width: 3 * @size;
+        height: @size;
+        line-height: @size;
+        font-size: @font-size;
+        margin: 0.5em;
+    }
+}

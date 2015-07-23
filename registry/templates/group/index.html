@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% set title = 'Gruppen-Startseite' %}
+
+{% block body %}
+
+<hr>
+<section class="groups row">
+    <div class="col-xs-2 group">
+        <a href="{{ url_for('group.new') }}" class="btn btn-success">Neu</a>
+    </div>
+{% for group in groups %}
+    <div class="col-xs-2 group">
+        <a href="{{ url_for('group.edit', group_id=group.id) }}" class="btn btn-primary">{{ group.name }} ({{ group.passports|count }})</a>
+    </div>
+{% endfor %}
+</section>
+{% endblock %}

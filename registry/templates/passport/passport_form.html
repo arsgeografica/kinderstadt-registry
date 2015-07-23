@@ -1,0 +1,133 @@
+{% from "macros.html" import field_row, field_errors %}
+
+{{ form.csrf_token() }}
+{{ form.pass_id() }}
+
+{% if form.check is defined %}
+<div class="check row">
+    <div class="col-xs-2">
+        <label for="check">Ausweis <span class="pass_id">{{ pass_id }}</span>:</label>
+    </div>
+    <div class="value col-xs-10">
+        <div class="form-group has-feedback">
+            {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
+        {{ field_errors(form.check) }}
+    </div>
+</div>
+{% endif %}
+
+<div class="surname row">
+    <div class="col-xs-2">
+        <label for="surname">Vorname:</label>
+    </div>
+    <div class="value col-xs-10">
+        <div class="form-group has-feedback">
+            {{ form.surname(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
+        {{ field_errors(form.surname) }}
+    </div>
+</div>
+<div class="name row">
+    <div class="col-xs-2">
+        <label for="name">Name:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="form-group has-feedback">
+            {{ form.name(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
+        {{ field_errors(form.name) }}
+    </div>
+</div>
+<div class="age row">
+    <div class="col-xs-2">
+        <label for="age">Alter:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="form-group has-feedback">
+            {{ form.age(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
+        {{ field_errors(form.age) }}
+    </div>
+</div>
+
+<div class="address row">
+    <div class="col-xs-2">
+        <label for="address">Adresse:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.address(class='form-control') }}
+        {{ field_errors(form.address) }}
+    </div>
+</div>
+
+<div class="phone row">
+    <div class="col-xs-2">
+        <label for="phone">Telefon:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="form-group has-feedback">
+            {{ form.phone(class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+        </div>
+        {{ field_errors(form.phone) }}
+    </div>
+</div>
+
+<div class="email row">
+    <div class="col-xs-2">
+        <label for="email">Email:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.email(class='form-control') }}
+        {{ field_errors(form.email) }}
+    </div>
+</div>
+
+<div class="infos_wanted row">
+    <div class="col-xs-2">
+        <label for="infos_wanted">Infos erwünscht:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="checkbox">
+        {{ form.infos_wanted() }}
+        <label for="infos_wanted"></label>
+        </div>
+        {{ field_errors(form.infos_wanted) }}
+    </div>
+</div>
+
+<div class="photos_allowed row">
+    <div class="col-xs-2">
+        <label for="photos_allowed">Fotos erlaubt:</label>
+    </div>
+    <div class="col-xs-10">
+        <div class="checkbox">
+        {{ form.photos_allowed() }}
+        <label for="photos_allowed"></label>
+        </div>
+        {{ field_errors(form.photos_allowed) }}
+    </div>
+</div>
+
+<div class="notes row">
+    <div class="col-xs-2">
+        <label for="notes">Bemerkungen:</label>
+    </div>
+    <div class="col-xs-10">
+        {{ form.notes(class='form-control') }}
+        {{ field_errors(form.notes) }}
+        <p><em>Allergien bitte auf der Innenseite des Ausweises eintragen!</em></p>
+    </div>
+</div>
+
+{% for flag in form.flags %}
+<div class="flags flag_{{ flag.key }} row">
+    <div class="col-xs-2">
+        {{ flag.label }}:
+    </div>
+    <div class="value col-xs-10">
+        {{ flag }}
+        {{ field_errors(flag) }}
+    </div>
+</div>
+{% endfor %}

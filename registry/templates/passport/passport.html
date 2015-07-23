@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% from "macros.html" import field_errors %}
+
+{% set title = '#' ~ passport.pass_id %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Pass {{ passport.pass_id}} ({{ passport.surname }} {{ passport.name }}) <small>Pass ein-, auschecken oder bearbeiten.</small></h1>
+</div>
+
+<form method="post">
+    {{ form.csrf_token() }}
+    {{ form.pass_id() }}
+
+    <div class="check row">
+        <div class="col-xs-2">
+            <label for="check">Pass #{{ passport.pass_id }}</label>
+        </div>
+        <div class="col-xs-10">
+            <div class="form-group has-feedback">
+                {{ form.check(autofocus=True, autocomplete='off', placeholder='hier die Check-ID eintragen', class='form-control') }}<i class="form-control-feedback fa fa-asterisk"></i>
+            </div>
+            {{ field_errors(form.check) }}
+        </div>
+    </div>
+
+    {% if form.flags._unbound_fields|length %}
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <p>Folgende Sperren müssen bestätigt werden:</p>
+            {% for flag in form.flags %}
+            <div class="checkbox checkbox-danger">
+                {{ flag }}
+                <label for="{{ flag.id }}">{{ flag.label.text }}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="actions row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <div class="btn-group">
+                {% if passport.checked_in %}
+                <button class="btn btn-primary btn-lg" name="checkout">Checkout</button>
+                <button class="btn btn-default btn-lg" name="checkin">Checkin</button>
+                {% else %}
+                <button class="btn btn-primary btn-lg" name="checkin">Checkin</button>
+                <button class="btn btn-default btn-lg" name="checkout">Checkout</button>
+                {% endif %}
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.edit', pass_id=passport.pass_id) }}">Bearbeiten</a>
+                <a class="btn btn-default btn-lg" href="{{ url_for('passport.home', pass_id=passport.home) }}">Abbrechen</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<section class="visits">
+    <h1>Protokoll</h1>
+    {% include 'passport/visits.html' %}
+</section>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
+{% endblock %}
