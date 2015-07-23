@@ -29,6 +29,8 @@ class FlagField(MultiCheckboxField):
 
 
 class MultiPassportField(MultiCheckboxField):
+    option_widget = registry.widgets.ButtonCheckboxInput()
+
     def __init__(self, passports, *args, **kwargs):
         self.passports = passports
 

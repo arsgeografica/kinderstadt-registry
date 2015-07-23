@@ -9,20 +9,15 @@
 {% endif %}
 
 {% block body %}
-<form method="post">
+<form method="post" class="group-transaction">
     {{ form.csrf_token() }}
 
+    <div data-toggle="buttons" class="passes">
     {% for passport in form.passports %}
-    <div class="passports passport_{{ passport.key }} row">
-        <div class="col-xs-2">
-            {{ passport.label }}:
-        </div>
-        <div class="value col-xs-10">
-            {{ passport }}
-            {{ field_errors(passport) }}
-        </div>
-    </div>
+        {{ passport }}
+        {{ field_errors(passport) }}
     {% endfor %}
+    </div>
 
     <div class="actions row">
         <div class="col-xs-10 col-xs-offset-2">

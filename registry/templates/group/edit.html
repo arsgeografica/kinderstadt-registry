@@ -41,6 +41,10 @@
             <div class="btn-group">
                 <button class="btn btn-primary btn-lg">Speichern</button>
                 <a class="btn btn-default btn-lg" href="{{ url_for('group.index') }}">Abbrechen</a>
+                {% if group.id %}
+                <a href="{{ url_for('group.check_in', group_id=group.id) }}" class="btn btn-lg btn-success">Check-In</a>
+                <a href="{{ url_for('group.check_out', group_id=group.id) }}" class="btn btn-lg btn-warning">Check-Out</a>
+                {% endif %}
             </div>
         </div>
     </div>
