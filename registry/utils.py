@@ -31,4 +31,4 @@ def pass_spec_builder(ids):
             spec[-1].append(id)
 
     return ','.join(['%d-%d' % (r[0], r[-1]) if r[0] != r[-1] else '%d' % r[0]
-                    for r in spec])
+                     for r in spec])
