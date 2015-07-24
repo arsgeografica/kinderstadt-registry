@@ -47,6 +47,22 @@ class Passport(db.Model):
     visits = relationship('Visit', backref=backref('passport'),
                           order_by='desc(Visit.timestamp)')
 
+    def __to_dict__(self):
+        return dict(
+            id=str(self.id),
+            pass_id=self.pass_id,
+            name=self.name,
+            surname=self.surname,
+            age=self.age,
+            address=self.address,
+            phone=self.phone,
+            email=self.email,
+            notes=self.notes,
+            flags=self.flags,
+            infos_wanted=self.infos_wanted,
+            photos_allowed=self.photos_allowed,
+            group_id=str(self.group_id))
+
     @property
     def is_active(self):
         """Property indicating whether the passport has any visits at all"""
@@ -136,6 +152,14 @@ class Visit(db.Model):
     check_out = Column(DateTime(timezone=False), index=True)
     sweeped = Column(Boolean, nullable=True)
 
+    def __to_dict__(self):
+        return dict(
+            id=str(self.id),
+            passport_id=str(self.passport_id),
+            check_in=self.check_in.isoformat() if self.check_in else None,
+            check_out=self.check_out.isoformat() if self.check_out else None,
+            sweeped=self.sweeped)
+
     @hybrid_property
     def timestamp(self):
         """Property giving timestamp for last visit check in or check out"""
@@ -201,6 +225,12 @@ class Group(db.Model):
     name = Column(String(length=128), nullable=False, unique=True)
     flags = Column(JSONB)
     passports = relationship(Passport, backref='group')
+
+    def __to_dict__(self):
+        return dict(
+            id=str(self.id),
+            name=self.name,
+            flags=self.flags)
 
 
 def commit_model(cls, *args, **kwargs):

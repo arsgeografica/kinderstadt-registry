@@ -113,5 +113,8 @@ def factory(config=None):
     app.add_url_rule('/tools/check-id',
                      'tools.check-id',
                      tools.check_id)
+    app.add_url_rule('/tools/dump',
+                     'tools.dump',
+                     tools.dump)
 
     return app
