@@ -7,7 +7,7 @@ from registry.extensions import db, migrate
 from registry import __version__
 from registry import models
 from registry import views
-from registry.views import chart, group, passport
+from registry.views import chart, group, passport, tools
 
 
 def check_flags(app):
@@ -107,5 +107,14 @@ def factory(config=None):
                      'group.check_out',
                      group.check_out,
                      methods=['GET', 'POST'])
+    app.add_url_rule('/tools',
+                     'tools.index',
+                     tools.index)
+    app.add_url_rule('/tools/check-id',
+                     'tools.check-id',
+                     tools.check_id)
+    app.add_url_rule('/tools/dump',
+                     'tools.dump',
+                     tools.dump)
 
     return app

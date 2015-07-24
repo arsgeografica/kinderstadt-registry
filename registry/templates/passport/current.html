@@ -6,7 +6,7 @@
 {% for pass in passes %}
     <li>
         <a href="{{ url_for('passport.passport', pass_id=pass.pass_id) }}">
-            <span>{{ pass.pass_id }}</span> seit
+            <span>{{ pass.surname }} {{pass.name }} ({{ pass.pass_id }})</span> seit
             <span>{{ pass.visits[0].check_in.strftime('%H:%M') }}</span>
         </a>
     </li>

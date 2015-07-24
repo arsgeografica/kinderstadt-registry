@@ -12,6 +12,9 @@
 
 // General styles
 .registry-version {
+    margin-top: 3em;
+    border-top: 1px solid #eee;
+    padding-top: 1em;
     color: #888;
     font-size: 0.75em;
     text-align: center;
@@ -78,8 +81,8 @@ form .has-feedback .form-control-feedback {
 .routes {
     text-align: center;
     .btn {
-        @font-size: 4em;
-        @size: 6em;
+        @font-size: 3em;
+        @size: 5.5em;
         display: inline-block;
         width: @size;
         height: @size;
@@ -140,5 +143,26 @@ form .has-feedback .form-control-feedback {
         line-height: @size;
         font-size: @font-size;
         margin: 0.5em;
+    }
+}
+
+// Styles for tools.chart
+.tools-check-id {
+    .row {
+        margin-bottom: 0;
+    }
+
+    font-size: 12em;
+    .pass-id {
+        input {
+            font-size: 1em;
+            line-height: 1em;
+            height: 1.5em;
+            text-align: center;
+        }
+    }
+
+    .check-id {
+        font-size: 1em;
     }
 }

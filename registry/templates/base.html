@@ -25,6 +25,9 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('home') }}">Startseite</a></li>
                 <li><a href="{{ url_for('passport.home') }}">Pässe</a></li>
+                <li><a href="{{ url_for('group.index') }}">Gruppen</a></li>
+                <li><a href="{{ url_for('chart.chart') }}">Statistik</a></li>
+                <li><a href="{{ url_for('tools.index') }}">Tools</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="active-counter" href="{{ url_for('passport.current') }}"><span class="badge">{{ active_passport_count }}</span> Aktive</a></li>

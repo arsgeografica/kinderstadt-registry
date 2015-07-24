@@ -117,3 +117,7 @@ class GroupForm(Form):
     def validate_passport_ids(form, field):
         # raise ValidationError(u'Ungültige Check-ID')
         pass
+
+
+class CheckIdForm(Form):
+    pass_id = IntegerField(validators=[DataRequired(), NumberRange(min=1)])
