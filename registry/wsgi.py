@@ -1,5 +1,5 @@
 import os
-from passgen.app import factory
+from registry.app import factory
 
 
 if 'REGISTRY_CONFIG_MODULE' not in os.environ:
