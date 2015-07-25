@@ -1,2 +1,5 @@
 include versioneer.py
 include registry/_version.py
+recursive-include registry/migrations *
+recursive-include registry/static *
+recursive-include registry/templates *

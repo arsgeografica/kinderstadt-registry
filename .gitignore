@@ -2,4 +2,5 @@
 /*.egg-info
 /.python-version
 /ansible.log
+/build
 /registry.log
